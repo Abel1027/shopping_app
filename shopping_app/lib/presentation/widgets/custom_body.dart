@@ -20,7 +20,10 @@ class CustomBody extends StatelessWidget {
               child: CircularProgressIndicatorWrapper(120.0),
             ),
             success: (items) => (items.length > 0)
-                ? CustomExpansionPanelList(items)
+                ? CustomExpansionPanelList(
+                    itemBloc: BlocProvider.of<ItemBloc>(context),
+                    items: items,
+                  )
                 : Center(
                     child: CustomErrorWidget(
                       image: Constants.alert,
