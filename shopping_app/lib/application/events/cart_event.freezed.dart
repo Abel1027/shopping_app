@@ -14,6 +14,11 @@ class _$CartEventTearOff {
   const _$CartEventTearOff();
 
 // ignore: unused_element
+  LoadCartEvent loadCart() {
+    return const LoadCartEvent();
+  }
+
+// ignore: unused_element
   AddToCartEvent addToCart(int itemId) {
     return AddToCartEvent(
       itemId,
@@ -34,40 +39,38 @@ const $CartEvent = _$CartEventTearOff();
 
 /// @nodoc
 mixin _$CartEvent {
-  int get itemId;
-
   @optionalTypeArgs
   TResult when<TResult extends Object>({
+    @required TResult loadCart(),
     @required TResult addToCart(int itemId),
     @required TResult removeFromCart(int itemId),
   });
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
+    TResult loadCart(),
     TResult addToCart(int itemId),
     TResult removeFromCart(int itemId),
     @required TResult orElse(),
   });
   @optionalTypeArgs
   TResult map<TResult extends Object>({
+    @required TResult loadCart(LoadCartEvent value),
     @required TResult addToCart(AddToCartEvent value),
     @required TResult removeFromCart(RemoveFromCartEvent value),
   });
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
+    TResult loadCart(LoadCartEvent value),
     TResult addToCart(AddToCartEvent value),
     TResult removeFromCart(RemoveFromCartEvent value),
     @required TResult orElse(),
   });
-
-  @JsonKey(ignore: true)
-  $CartEventCopyWith<CartEvent> get copyWith;
 }
 
 /// @nodoc
 abstract class $CartEventCopyWith<$Res> {
   factory $CartEventCopyWith(CartEvent value, $Res Function(CartEvent) then) =
       _$CartEventCopyWithImpl<$Res>;
-  $Res call({int itemId});
 }
 
 /// @nodoc
@@ -77,24 +80,109 @@ class _$CartEventCopyWithImpl<$Res> implements $CartEventCopyWith<$Res> {
   final CartEvent _value;
   // ignore: unused_field
   final $Res Function(CartEvent) _then;
-
-  @override
-  $Res call({
-    Object itemId = freezed,
-  }) {
-    return _then(_value.copyWith(
-      itemId: itemId == freezed ? _value.itemId : itemId as int,
-    ));
-  }
 }
 
 /// @nodoc
-abstract class $AddToCartEventCopyWith<$Res>
-    implements $CartEventCopyWith<$Res> {
+abstract class $LoadCartEventCopyWith<$Res> {
+  factory $LoadCartEventCopyWith(
+          LoadCartEvent value, $Res Function(LoadCartEvent) then) =
+      _$LoadCartEventCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$LoadCartEventCopyWithImpl<$Res> extends _$CartEventCopyWithImpl<$Res>
+    implements $LoadCartEventCopyWith<$Res> {
+  _$LoadCartEventCopyWithImpl(
+      LoadCartEvent _value, $Res Function(LoadCartEvent) _then)
+      : super(_value, (v) => _then(v as LoadCartEvent));
+
+  @override
+  LoadCartEvent get _value => super._value as LoadCartEvent;
+}
+
+/// @nodoc
+class _$LoadCartEvent implements LoadCartEvent {
+  const _$LoadCartEvent();
+
+  @override
+  String toString() {
+    return 'CartEvent.loadCart()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is LoadCartEvent);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult loadCart(),
+    @required TResult addToCart(int itemId),
+    @required TResult removeFromCart(int itemId),
+  }) {
+    assert(loadCart != null);
+    assert(addToCart != null);
+    assert(removeFromCart != null);
+    return loadCart();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult loadCart(),
+    TResult addToCart(int itemId),
+    TResult removeFromCart(int itemId),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (loadCart != null) {
+      return loadCart();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult loadCart(LoadCartEvent value),
+    @required TResult addToCart(AddToCartEvent value),
+    @required TResult removeFromCart(RemoveFromCartEvent value),
+  }) {
+    assert(loadCart != null);
+    assert(addToCart != null);
+    assert(removeFromCart != null);
+    return loadCart(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult loadCart(LoadCartEvent value),
+    TResult addToCart(AddToCartEvent value),
+    TResult removeFromCart(RemoveFromCartEvent value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (loadCart != null) {
+      return loadCart(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class LoadCartEvent implements CartEvent {
+  const factory LoadCartEvent() = _$LoadCartEvent;
+}
+
+/// @nodoc
+abstract class $AddToCartEventCopyWith<$Res> {
   factory $AddToCartEventCopyWith(
           AddToCartEvent value, $Res Function(AddToCartEvent) then) =
       _$AddToCartEventCopyWithImpl<$Res>;
-  @override
   $Res call({int itemId});
 }
 
@@ -150,9 +238,11 @@ class _$AddToCartEvent implements AddToCartEvent {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object>({
+    @required TResult loadCart(),
     @required TResult addToCart(int itemId),
     @required TResult removeFromCart(int itemId),
   }) {
+    assert(loadCart != null);
     assert(addToCart != null);
     assert(removeFromCart != null);
     return addToCart(itemId);
@@ -161,6 +251,7 @@ class _$AddToCartEvent implements AddToCartEvent {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
+    TResult loadCart(),
     TResult addToCart(int itemId),
     TResult removeFromCart(int itemId),
     @required TResult orElse(),
@@ -175,9 +266,11 @@ class _$AddToCartEvent implements AddToCartEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object>({
+    @required TResult loadCart(LoadCartEvent value),
     @required TResult addToCart(AddToCartEvent value),
     @required TResult removeFromCart(RemoveFromCartEvent value),
   }) {
+    assert(loadCart != null);
     assert(addToCart != null);
     assert(removeFromCart != null);
     return addToCart(this);
@@ -186,6 +279,7 @@ class _$AddToCartEvent implements AddToCartEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
+    TResult loadCart(LoadCartEvent value),
     TResult addToCart(AddToCartEvent value),
     TResult removeFromCart(RemoveFromCartEvent value),
     @required TResult orElse(),
@@ -201,20 +295,16 @@ class _$AddToCartEvent implements AddToCartEvent {
 abstract class AddToCartEvent implements CartEvent {
   const factory AddToCartEvent(int itemId) = _$AddToCartEvent;
 
-  @override
   int get itemId;
-  @override
   @JsonKey(ignore: true)
   $AddToCartEventCopyWith<AddToCartEvent> get copyWith;
 }
 
 /// @nodoc
-abstract class $RemoveFromCartEventCopyWith<$Res>
-    implements $CartEventCopyWith<$Res> {
+abstract class $RemoveFromCartEventCopyWith<$Res> {
   factory $RemoveFromCartEventCopyWith(
           RemoveFromCartEvent value, $Res Function(RemoveFromCartEvent) then) =
       _$RemoveFromCartEventCopyWithImpl<$Res>;
-  @override
   $Res call({int itemId});
 }
 
@@ -271,9 +361,11 @@ class _$RemoveFromCartEvent implements RemoveFromCartEvent {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object>({
+    @required TResult loadCart(),
     @required TResult addToCart(int itemId),
     @required TResult removeFromCart(int itemId),
   }) {
+    assert(loadCart != null);
     assert(addToCart != null);
     assert(removeFromCart != null);
     return removeFromCart(itemId);
@@ -282,6 +374,7 @@ class _$RemoveFromCartEvent implements RemoveFromCartEvent {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
+    TResult loadCart(),
     TResult addToCart(int itemId),
     TResult removeFromCart(int itemId),
     @required TResult orElse(),
@@ -296,9 +389,11 @@ class _$RemoveFromCartEvent implements RemoveFromCartEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object>({
+    @required TResult loadCart(LoadCartEvent value),
     @required TResult addToCart(AddToCartEvent value),
     @required TResult removeFromCart(RemoveFromCartEvent value),
   }) {
+    assert(loadCart != null);
     assert(addToCart != null);
     assert(removeFromCart != null);
     return removeFromCart(this);
@@ -307,6 +402,7 @@ class _$RemoveFromCartEvent implements RemoveFromCartEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
+    TResult loadCart(LoadCartEvent value),
     TResult addToCart(AddToCartEvent value),
     TResult removeFromCart(RemoveFromCartEvent value),
     @required TResult orElse(),
@@ -322,9 +418,7 @@ class _$RemoveFromCartEvent implements RemoveFromCartEvent {
 abstract class RemoveFromCartEvent implements CartEvent {
   const factory RemoveFromCartEvent(int itemId) = _$RemoveFromCartEvent;
 
-  @override
   int get itemId;
-  @override
   @JsonKey(ignore: true)
   $RemoveFromCartEventCopyWith<RemoveFromCartEvent> get copyWith;
 }

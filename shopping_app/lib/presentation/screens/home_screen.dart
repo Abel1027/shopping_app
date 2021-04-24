@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopping_app/application/events/cart_event.dart';
 import '../../application/blocs/blocs.dart';
 import '../widgets/widgets.dart';
 
@@ -32,7 +33,7 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       child: BlocProvider<CartBloc>(
-        create: (BuildContext context) => CartBloc(),
+        create: (BuildContext context) => CartBloc()..add(CartEvent.loadCart()),
         child: Scaffold(
           appBar: CustomAppBar('Welcome to the shop'),
           body: CustomBody(),

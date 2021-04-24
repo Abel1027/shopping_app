@@ -48,6 +48,36 @@ class ShopAPI {
     }
   }
 
+  Future<CartResponse> loadCart() async {
+    try {
+      // throw FormatException('format except');
+      Cart cart = Cart(
+        items: [
+          CountableItem(
+            item: Item(
+              id: 123,
+              title: 'Chanel Coco',
+              description:
+                  'Fresh scent, made with notes of jasmine, rose, patchouli and vetiver.',
+              imageUrl:
+                  'https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto:good,f_jpg,fl_lossy,dpr_1.2/w_1920/coco-mademoiselle-eau-de-parfum-intense-spray-3-4fl-oz--packshot-default-116660-8831021678622.jpg',
+              price: 82.00,
+            ),
+            amount: 2,
+          ),
+        ],
+        total: 98.99,
+      );
+      return CartResponse(response: Responses.OK, cart: cart);
+    } on SocketException catch (e) {
+      print('loadCartSE: ${e.message}');
+      return CartResponse(response: Responses.NetworkError);
+    } catch (e) {
+      print('loadCartCatch: ${e.toString()}');
+      return CartResponse(response: Responses.UnknownError);
+    }
+  }
+
   Future<CartResponse> addToCart(int itemId) async {
     try {
       // throw FormatException('format except');

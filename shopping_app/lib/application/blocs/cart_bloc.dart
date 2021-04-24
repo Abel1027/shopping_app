@@ -10,7 +10,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   @override
   Stream<CartState> mapEventToState(CartEvent event) async* {
-    if (event is AddToCartEvent) {
+    if (event is LoadCartEvent) {
+      yield CartState.loading();
+
+      CartResponse cartResponse = await shopApi.loadCart();
+
+      if (cartResponse.response == Responses.OK) {
+        yield CartState.success(cartResponse.cart);
+      } else {
+        yield* _mapErrorToState(cartResponse.response);
+      }
+    } else if (event is AddToCartEvent) {
       yield CartState.loading();
 
       CartResponse cartResponse = await shopApi.addToCart(event.itemId);
