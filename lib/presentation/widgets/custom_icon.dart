@@ -5,12 +5,14 @@ class CustomIcon extends StatelessWidget {
   final double padding;
   final String tooltip;
   final GestureTapCallback onTap;
+  final GestureLongPressCallback onLongPress;
 
   const CustomIcon({
     this.icon,
     this.padding = 12.0,
     this.tooltip,
     this.onTap,
+    this.onLongPress,
   });
 
   @override
@@ -22,6 +24,7 @@ class CustomIcon extends StatelessWidget {
       ),
       customBorder: CircleBorder(),
       onTap: onTap,
+      onLongPress: onLongPress,
     );
     return Material(
       color: Colors.transparent,

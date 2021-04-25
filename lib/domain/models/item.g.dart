@@ -13,7 +13,6 @@ _$_Item _$_$_ItemFromJson(Map<String, dynamic> json) {
     description: json['description'] as String,
     imageUrl: json['imageUrl'] as String,
     price: (json['price'] as num)?.toDouble(),
-    availability: json['availability'] as int,
   );
 }
 
@@ -23,5 +22,4 @@ Map<String, dynamic> _$_$_ItemToJson(_$_Item instance) => <String, dynamic>{
       'description': instance.description,
       'imageUrl': instance.imageUrl,
       'price': instance.price,
-      'availability': instance.availability,
     };

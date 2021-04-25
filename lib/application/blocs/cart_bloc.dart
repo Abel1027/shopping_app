@@ -9,7 +9,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   @override
   CartState get initialState => CartState.init();
 
-  Cart myCart = Cart(itemReferences: <ItemReference>[], total: 0.0);
+  Cart myCart = Cart(cItems: <CountableItem>[], total: 0.0);
 
   @override
   Stream<CartState> mapEventToState(CartEvent event) async* {
@@ -20,33 +20,31 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           await shopApi.addToCart(event.itemReference.reference);
 
       if (cartResponse.response == Responses.OK) {
-        List<ItemReference> newItemReferences;
+        List<CountableItem> newCItems;
 
-        int itemIndex = myCart.itemReferences.indexWhere((itemReference) =>
-            itemReference.item.productId == event.itemReference.item.productId);
+        int itemIndex = myCart.cItems.indexWhere((cItem) =>
+            cItem.itemReference.item.productId ==
+            event.itemReference.item.productId);
 
         if (itemIndex == -1) {
-          newItemReferences = myCart.itemReferences;
-          newItemReferences.add(event.itemReference.copyWith(
-              item: event.itemReference.item.copyWith(availability: 1)));
+          newCItems = myCart.cItems;
+          newCItems.add(
+              CountableItem(itemReference: event.itemReference, amount: 1));
         } else {
-          newItemReferences = myCart.itemReferences
-              .map((itemReference) => itemReference.copyWith(
-                  item: itemReference.item.copyWith(
-                      availability: (event.itemReference.item.productId ==
-                              itemReference.item.productId)
-                          ? itemReference.item.availability + 1
-                          : itemReference.item.availability)))
+          newCItems = myCart.cItems
+              .map((cItem) => cItem.copyWith(
+                  amount: (event.itemReference.item.productId ==
+                          cItem.itemReference.item.productId)
+                      ? cItem.amount + 1
+                      : cItem.amount))
               .toList();
         }
-        double newTotal = newItemReferences.fold(
+        double newTotal = newCItems.fold(
             0,
-            (sum, itemReference) =>
-                sum +
-                itemReference.item.availability * itemReference.item.price);
+            (sum, cItem) =>
+                sum + cItem.amount * cItem.itemReference.item.price);
 
-        myCart =
-            myCart.copyWith(itemReferences: newItemReferences, total: newTotal);
+        myCart = myCart.copyWith(cItems: newCItems, total: newTotal);
 
         yield CartState.success(
             cart: myCart, message: 'Item added successfully!');
@@ -58,29 +56,30 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       } else if (cartResponse.response == Responses.UnknownError) {
         yield CartState.error(
           cart: myCart,
-          message: 'Try again later.',
+          message: 'Something is wrong, try again later.',
         );
       }
     } else if (event is RemoveFromCartEvent) {
       yield CartState.loading();
 
-      CartResponse cartResponse =
-          await shopApi.removeFromCart(event.itemReference.reference);
+      CartResponse cartResponse = await shopApi.removeFromCart(
+        event.cItem.itemReference.reference,
+        event.cItem.amount,
+      );
 
       if (cartResponse.response == Responses.OK) {
-        List<ItemReference> newItemReferences = myCart.itemReferences
-            .where((itemReference) =>
-                itemReference.reference.id != event.itemReference.reference.id)
+        List<CountableItem> newCItems = myCart.cItems
+            .where((cItem) =>
+                cItem.itemReference.reference.id !=
+                event.cItem.itemReference.reference.id)
             .toList();
 
-        double newTotal = newItemReferences.fold(
+        double newTotal = newCItems.fold(
             0,
-            (sum, itemReference) =>
-                sum +
-                itemReference.item.availability * itemReference.item.price);
+            (sum, cItem) =>
+                sum + cItem.amount * cItem.itemReference.item.price);
 
-        myCart =
-            myCart.copyWith(itemReferences: newItemReferences, total: newTotal);
+        myCart = myCart.copyWith(cItems: newCItems, total: newTotal);
 
         yield CartState.success(
             cart: myCart, message: 'Items removed successfully!');
@@ -92,28 +91,33 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       } else if (cartResponse.response == Responses.UnknownError) {
         yield CartState.error(
           cart: myCart,
-          message: 'Try again later.',
+          message: 'Something is wrong, try again later.',
         );
       }
     } else if (event is PayEvent) {
+      myCart = myCart.copyWith(cItems: <CountableItem>[], total: 0.0);
+
+      yield CartState.success(
+          cart: myCart, message: 'Payment processed successfully!');
+    } else if (event is ResetDbEvent) {
       yield CartState.loading();
 
-      CartResponse cartResponse = await shopApi.pay();
+      CartResponse cartResponse = await shopApi.resetDB();
 
       if (cartResponse.response == Responses.OK) {
-        myCart = myCart.copyWith(itemReferences: <ItemReference>[], total: 0.0);
+        myCart = myCart.copyWith(cItems: <CountableItem>[], total: 0.0);
 
         yield CartState.success(
-            cart: myCart, message: 'Payment processed successfully!');
+            cart: myCart, message: 'Data base reset successfully!');
       } else if (cartResponse.response == Responses.OperationFailed) {
         yield CartState.error(
           cart: myCart,
-          message: 'Something is wrong with the payment.',
+          message: 'Error during data base reset operation.',
         );
       } else if (cartResponse.response == Responses.UnknownError) {
         yield CartState.error(
           cart: myCart,
-          message: 'Try again later.',
+          message: 'Something is wrong, try again later.',
         );
       }
     }

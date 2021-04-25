@@ -19,9 +19,7 @@ class CartPopupMenu extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: _cartPopupMenuChildren(
-            context: context,
-            cartBloc: cartBloc,
-            itemReferences: cart.itemReferences),
+            context: context, cartBloc: cartBloc, cItems: cart.cItems),
       ),
     );
   }
@@ -29,14 +27,14 @@ class CartPopupMenu extends StatelessWidget {
   List<Widget> _cartPopupMenuChildren({
     BuildContext context,
     CartBloc cartBloc,
-    List<ItemReference> itemReferences,
+    List<CountableItem> cItems,
   }) {
     var children = <Widget>[];
 
     children
-      ..addAll(itemReferences.map((itemReference) => _CartPopupItem(
+      ..addAll(cItems.map((cItem) => _CartPopupItem(
             cartBloc: cartBloc,
-            itemReference: itemReference,
+            cItem: cItem,
           )))
       ..add(Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,7 +48,7 @@ class CartPopupMenu extends StatelessWidget {
                   style: TextStyle(color: Theme.of(context).indicatorColor),
                 ),
                 onPressed: () async {
-                  if (itemReferences.length == 0) {
+                  if (cItems.length == 0) {
                     return showDialog<void>(
                       context: context,
                       barrierDismissible: false, // user must tap button!
@@ -105,12 +103,9 @@ class CartPopupMenu extends StatelessWidget {
 
 class _CartPopupItem extends StatelessWidget {
   final CartBloc cartBloc;
-  final ItemReference itemReference;
+  final CountableItem cItem;
 
-  const _CartPopupItem({
-    this.cartBloc,
-    this.itemReference,
-  });
+  const _CartPopupItem({this.cartBloc, this.cItem});
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +126,7 @@ class _CartPopupItem extends StatelessWidget {
               child: BlocProvider<ItemImageBloc>(
                 create: (BuildContext context) => ItemImageBloc()
                   ..add(ItemImageEvent.loadItemImage(
-                      itemReference.item.imageUrl)),
+                      cItem.itemReference.item.imageUrl)),
                 child: BlocBuilder<ItemImageBloc, ItemImageState>(
                   builder: (context, state) => state.when(
                     loading: () => CircularProgressIndicatorWrapper(120.0),
@@ -157,7 +152,7 @@ class _CartPopupItem extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                         child: Text(
-                          itemReference.item.title,
+                          cItem.itemReference.item.title,
                           style: Theme.of(context)
                               .textTheme
                               .subtitle1
@@ -167,8 +162,8 @@ class _CartPopupItem extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 4.0, top: 2.0),
                         child: Text(
-                          '${itemReference.item.availability.toString()} x '
-                          '\$${itemReference.item.price.toString()} USD',
+                          '${cItem.amount.toString()} x '
+                          '\$${cItem.itemReference.item.price.toString()} USD',
                           style: Theme.of(context)
                               .textTheme
                               .subtitle2
@@ -183,8 +178,7 @@ class _CartPopupItem extends StatelessWidget {
                       Expanded(child: SizedBox(width: 12.0)),
                       IconButton(
                         icon: Icon(Icons.delete),
-                        onPressed: () =>
-                            removeItem(context, itemReference.item.productId),
+                        onPressed: () => removeItem(context, cItem),
                       ),
                     ],
                   ),
@@ -197,7 +191,7 @@ class _CartPopupItem extends StatelessWidget {
     );
   }
 
-  void removeItem(BuildContext outerContext, String itemId) {
+  void removeItem(BuildContext outerContext, CountableItem cItem) {
     showDialog<void>(
       context: outerContext,
       barrierDismissible: false, // user must tap button!
@@ -218,7 +212,7 @@ class _CartPopupItem extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.of(outerContext).pop();
-                  cartBloc.add(CartEvent.removeFromCart(itemReference));
+                  cartBloc.add(CartEvent.removeFromCart(cItem));
                 },
               ),
             ],

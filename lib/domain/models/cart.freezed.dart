@@ -14,9 +14,9 @@ class _$CartTearOff {
   const _$CartTearOff();
 
 // ignore: unused_element
-  _Cart call({List<ItemReference> itemReferences, double total}) {
+  _Cart call({List<CountableItem> cItems, double total}) {
     return _Cart(
-      itemReferences: itemReferences,
+      cItems: cItems,
       total: total,
     );
   }
@@ -28,7 +28,7 @@ const $Cart = _$CartTearOff();
 
 /// @nodoc
 mixin _$Cart {
-  List<ItemReference> get itemReferences;
+  List<CountableItem> get cItems;
   double get total;
 
   @JsonKey(ignore: true)
@@ -39,7 +39,7 @@ mixin _$Cart {
 abstract class $CartCopyWith<$Res> {
   factory $CartCopyWith(Cart value, $Res Function(Cart) then) =
       _$CartCopyWithImpl<$Res>;
-  $Res call({List<ItemReference> itemReferences, double total});
+  $Res call({List<CountableItem> cItems, double total});
 }
 
 /// @nodoc
@@ -52,13 +52,11 @@ class _$CartCopyWithImpl<$Res> implements $CartCopyWith<$Res> {
 
   @override
   $Res call({
-    Object itemReferences = freezed,
+    Object cItems = freezed,
     Object total = freezed,
   }) {
     return _then(_value.copyWith(
-      itemReferences: itemReferences == freezed
-          ? _value.itemReferences
-          : itemReferences as List<ItemReference>,
+      cItems: cItems == freezed ? _value.cItems : cItems as List<CountableItem>,
       total: total == freezed ? _value.total : total as double,
     ));
   }
@@ -69,7 +67,7 @@ abstract class _$CartCopyWith<$Res> implements $CartCopyWith<$Res> {
   factory _$CartCopyWith(_Cart value, $Res Function(_Cart) then) =
       __$CartCopyWithImpl<$Res>;
   @override
-  $Res call({List<ItemReference> itemReferences, double total});
+  $Res call({List<CountableItem> cItems, double total});
 }
 
 /// @nodoc
@@ -83,13 +81,11 @@ class __$CartCopyWithImpl<$Res> extends _$CartCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object itemReferences = freezed,
+    Object cItems = freezed,
     Object total = freezed,
   }) {
     return _then(_Cart(
-      itemReferences: itemReferences == freezed
-          ? _value.itemReferences
-          : itemReferences as List<ItemReference>,
+      cItems: cItems == freezed ? _value.cItems : cItems as List<CountableItem>,
       total: total == freezed ? _value.total : total as double,
     ));
   }
@@ -97,25 +93,24 @@ class __$CartCopyWithImpl<$Res> extends _$CartCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_Cart implements _Cart {
-  const _$_Cart({this.itemReferences, this.total});
+  const _$_Cart({this.cItems, this.total});
 
   @override
-  final List<ItemReference> itemReferences;
+  final List<CountableItem> cItems;
   @override
   final double total;
 
   @override
   String toString() {
-    return 'Cart(itemReferences: $itemReferences, total: $total)';
+    return 'Cart(cItems: $cItems, total: $total)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _Cart &&
-            (identical(other.itemReferences, itemReferences) ||
-                const DeepCollectionEquality()
-                    .equals(other.itemReferences, itemReferences)) &&
+            (identical(other.cItems, cItems) ||
+                const DeepCollectionEquality().equals(other.cItems, cItems)) &&
             (identical(other.total, total) ||
                 const DeepCollectionEquality().equals(other.total, total)));
   }
@@ -123,7 +118,7 @@ class _$_Cart implements _Cart {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(itemReferences) ^
+      const DeepCollectionEquality().hash(cItems) ^
       const DeepCollectionEquality().hash(total);
 
   @JsonKey(ignore: true)
@@ -133,11 +128,10 @@ class _$_Cart implements _Cart {
 }
 
 abstract class _Cart implements Cart {
-  const factory _Cart({List<ItemReference> itemReferences, double total}) =
-      _$_Cart;
+  const factory _Cart({List<CountableItem> cItems, double total}) = _$_Cart;
 
   @override
-  List<ItemReference> get itemReferences;
+  List<CountableItem> get cItems;
   @override
   double get total;
   @override

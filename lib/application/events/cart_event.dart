@@ -6,9 +6,11 @@ part 'cart_event.freezed.dart';
 @freezed
 abstract class CartEvent with _$CartEvent {
   const factory CartEvent.loadCart() = LoadCartEvent;
-  const factory CartEvent.addToCart(ItemReference itemReference) =
-      AddToCartEvent;
-  const factory CartEvent.removeFromCart(ItemReference itemReference) =
+  const factory CartEvent.addToCart(
+    ItemReference itemReference,
+  ) = AddToCartEvent;
+  const factory CartEvent.removeFromCart(CountableItem cItem) =
       RemoveFromCartEvent;
   const factory CartEvent.pay() = PayEvent;
+  const factory CartEvent.resetDb() = ResetDbEvent;
 }

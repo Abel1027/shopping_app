@@ -17,25 +17,8 @@ class AppTheme {
     focusColor: Colors.greenAccent,
     indicatorColor: accent,
 
-    /// Checkbox and radio buttons color
-    toggleableActiveColor: primary,
-
     iconTheme: IconThemeData(color: accent),
     textTheme: TextTheme(
-      /// Titles inside ArchDecorationContainer
-      bodyText1: TextStyle(
-        fontFamily: 'ProductSans-Medium',
-        fontSize: 14.0,
-        color: accent,
-      ),
-
-      /// FAQ answers
-      bodyText2: TextStyle(
-        fontFamily: 'ProductSans-Regular',
-        fontSize: 15.0,
-        color: Colors.black54,
-      ),
-
       /// Titles in ListTiles and ExpansionTile, texts in TextFields
       subtitle1: TextStyle(
         fontFamily: 'ProductSans-Medium',
@@ -43,7 +26,6 @@ class AppTheme {
         color: accent,
       ),
 
-      /// Users, FAQ questions, Dept titles.
       subtitle2: TextStyle(
         fontFamily: 'ProductSans-Medium',
         fontSize: 15.0,
@@ -60,7 +42,7 @@ class AppTheme {
         fontFamily: 'ProductSans-Bold',
         fontSize: 15.0,
         color: primary,
-      ), //ver pq no coge el color
+      ),
     ),
 
     /// Default font
@@ -89,18 +71,6 @@ class AppTheme {
         fontFamily: 'ProductSans-Regular',
         fontSize: 15.0,
         color: accent,
-      ),
-    ),
-    tabBarTheme: TabBarTheme(
-      labelStyle: TextStyle(fontFamily: 'ProductSans-Bold'),
-      labelColor: accent,
-    ),
-    primaryTextTheme: TextTheme(
-      /// AppBar title
-      headline6: TextStyle(
-        fontFamily: 'ProductSans-Bold',
-        fontSize: 20.0,
-        color: Colors.white,
       ),
     ),
   );

@@ -75,12 +75,12 @@ class _ItemListTileState extends State<ItemListTile> {
               color: Theme.of(context).accentColor,
             ),
             tooltip: 'Add to cart',
-            onTap: () {
-              _addToCart(
-                context,
-                widget.itemReference,
-              );
-            },
+            onTap: () => _addToCart(
+              context,
+              widget.itemReference,
+            ),
+            onLongPress: () =>
+                BlocProvider.of<CartBloc>(context).add(ResetDbEvent()),
           ),
         ]),
       ],

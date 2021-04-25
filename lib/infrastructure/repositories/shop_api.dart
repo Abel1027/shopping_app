@@ -57,7 +57,10 @@ class ShopAPI {
     }
   }
 
-  Future<CartResponse> removeFromCart(DocumentReference reference) async {
+  Future<CartResponse> removeFromCart(
+    DocumentReference reference,
+    int amount,
+  ) async {
     try {
       // throw FormatException('format except');
       return CartResponse(Responses.OK);
@@ -67,7 +70,7 @@ class ShopAPI {
     }
   }
 
-  Future<CartResponse> pay() async {
+  Future<CartResponse> resetDB() async {
     try {
       // throw FormatException('format except');
       return CartResponse(Responses.OK);
