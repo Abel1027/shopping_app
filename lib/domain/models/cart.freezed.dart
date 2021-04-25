@@ -14,9 +14,9 @@ class _$CartTearOff {
   const _$CartTearOff();
 
 // ignore: unused_element
-  _Cart call({List<Item> items, double total}) {
+  _Cart call({List<ItemReference> itemReferences, double total}) {
     return _Cart(
-      items: items,
+      itemReferences: itemReferences,
       total: total,
     );
   }
@@ -28,7 +28,7 @@ const $Cart = _$CartTearOff();
 
 /// @nodoc
 mixin _$Cart {
-  List<Item> get items;
+  List<ItemReference> get itemReferences;
   double get total;
 
   @JsonKey(ignore: true)
@@ -39,7 +39,7 @@ mixin _$Cart {
 abstract class $CartCopyWith<$Res> {
   factory $CartCopyWith(Cart value, $Res Function(Cart) then) =
       _$CartCopyWithImpl<$Res>;
-  $Res call({List<Item> items, double total});
+  $Res call({List<ItemReference> itemReferences, double total});
 }
 
 /// @nodoc
@@ -52,11 +52,13 @@ class _$CartCopyWithImpl<$Res> implements $CartCopyWith<$Res> {
 
   @override
   $Res call({
-    Object items = freezed,
+    Object itemReferences = freezed,
     Object total = freezed,
   }) {
     return _then(_value.copyWith(
-      items: items == freezed ? _value.items : items as List<Item>,
+      itemReferences: itemReferences == freezed
+          ? _value.itemReferences
+          : itemReferences as List<ItemReference>,
       total: total == freezed ? _value.total : total as double,
     ));
   }
@@ -67,7 +69,7 @@ abstract class _$CartCopyWith<$Res> implements $CartCopyWith<$Res> {
   factory _$CartCopyWith(_Cart value, $Res Function(_Cart) then) =
       __$CartCopyWithImpl<$Res>;
   @override
-  $Res call({List<Item> items, double total});
+  $Res call({List<ItemReference> itemReferences, double total});
 }
 
 /// @nodoc
@@ -81,11 +83,13 @@ class __$CartCopyWithImpl<$Res> extends _$CartCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object items = freezed,
+    Object itemReferences = freezed,
     Object total = freezed,
   }) {
     return _then(_Cart(
-      items: items == freezed ? _value.items : items as List<Item>,
+      itemReferences: itemReferences == freezed
+          ? _value.itemReferences
+          : itemReferences as List<ItemReference>,
       total: total == freezed ? _value.total : total as double,
     ));
   }
@@ -93,24 +97,25 @@ class __$CartCopyWithImpl<$Res> extends _$CartCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_Cart implements _Cart {
-  const _$_Cart({this.items, this.total});
+  const _$_Cart({this.itemReferences, this.total});
 
   @override
-  final List<Item> items;
+  final List<ItemReference> itemReferences;
   @override
   final double total;
 
   @override
   String toString() {
-    return 'Cart(items: $items, total: $total)';
+    return 'Cart(itemReferences: $itemReferences, total: $total)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _Cart &&
-            (identical(other.items, items) ||
-                const DeepCollectionEquality().equals(other.items, items)) &&
+            (identical(other.itemReferences, itemReferences) ||
+                const DeepCollectionEquality()
+                    .equals(other.itemReferences, itemReferences)) &&
             (identical(other.total, total) ||
                 const DeepCollectionEquality().equals(other.total, total)));
   }
@@ -118,7 +123,7 @@ class _$_Cart implements _Cart {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(items) ^
+      const DeepCollectionEquality().hash(itemReferences) ^
       const DeepCollectionEquality().hash(total);
 
   @JsonKey(ignore: true)
@@ -128,10 +133,11 @@ class _$_Cart implements _Cart {
 }
 
 abstract class _Cart implements Cart {
-  const factory _Cart({List<Item> items, double total}) = _$_Cart;
+  const factory _Cart({List<ItemReference> itemReferences, double total}) =
+      _$_Cart;
 
   @override
-  List<Item> get items;
+  List<ItemReference> get itemReferences;
   @override
   double get total;
   @override

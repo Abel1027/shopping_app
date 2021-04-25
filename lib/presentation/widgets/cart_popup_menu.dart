@@ -19,7 +19,9 @@ class CartPopupMenu extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: _cartPopupMenuChildren(
-            context: context, cartBloc: cartBloc, items: cart.items),
+            context: context,
+            cartBloc: cartBloc,
+            itemReferences: cart.itemReferences),
       ),
     );
   }
@@ -27,14 +29,14 @@ class CartPopupMenu extends StatelessWidget {
   List<Widget> _cartPopupMenuChildren({
     BuildContext context,
     CartBloc cartBloc,
-    List<Item> items,
+    List<ItemReference> itemReferences,
   }) {
     var children = <Widget>[];
 
     children
-      ..addAll(items.map((item) => _CartPopupItem(
+      ..addAll(itemReferences.map((itemReference) => _CartPopupItem(
             cartBloc: cartBloc,
-            item: item,
+            itemReference: itemReference,
           )))
       ..add(Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,7 +50,7 @@ class CartPopupMenu extends StatelessWidget {
                   style: TextStyle(color: Theme.of(context).indicatorColor),
                 ),
                 onPressed: () async {
-                  if (items.length == 0) {
+                  if (itemReferences.length == 0) {
                     return showDialog<void>(
                       context: context,
                       barrierDismissible: false, // user must tap button!
@@ -103,11 +105,11 @@ class CartPopupMenu extends StatelessWidget {
 
 class _CartPopupItem extends StatelessWidget {
   final CartBloc cartBloc;
-  final Item item;
+  final ItemReference itemReference;
 
   const _CartPopupItem({
     this.cartBloc,
-    this.item,
+    this.itemReference,
   });
 
   @override
@@ -128,7 +130,8 @@ class _CartPopupItem extends StatelessWidget {
               padding: const EdgeInsets.all(2.0),
               child: BlocProvider<ItemImageBloc>(
                 create: (BuildContext context) => ItemImageBloc()
-                  ..add(ItemImageEvent.loadItemImage(item.imageUrl)),
+                  ..add(ItemImageEvent.loadItemImage(
+                      itemReference.item.imageUrl)),
                 child: BlocBuilder<ItemImageBloc, ItemImageState>(
                   builder: (context, state) => state.when(
                     loading: () => CircularProgressIndicatorWrapper(120.0),
@@ -154,7 +157,7 @@ class _CartPopupItem extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                         child: Text(
-                          item.title,
+                          itemReference.item.title,
                           style: Theme.of(context)
                               .textTheme
                               .subtitle1
@@ -164,7 +167,8 @@ class _CartPopupItem extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 4.0, top: 2.0),
                         child: Text(
-                          '${item.availability.toString()} x \$${item.price.toString()} USD',
+                          '${itemReference.item.availability.toString()} x '
+                          '\$${itemReference.item.price.toString()} USD',
                           style: Theme.of(context)
                               .textTheme
                               .subtitle2
@@ -179,7 +183,8 @@ class _CartPopupItem extends StatelessWidget {
                       Expanded(child: SizedBox(width: 12.0)),
                       IconButton(
                         icon: Icon(Icons.delete),
-                        onPressed: () => removeItem(context, item.productId),
+                        onPressed: () =>
+                            removeItem(context, itemReference.item.productId),
                       ),
                     ],
                   ),
@@ -213,7 +218,7 @@ class _CartPopupItem extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.of(outerContext).pop();
-                  cartBloc.add(CartEvent.removeFromCart(itemId));
+                  cartBloc.add(CartEvent.removeFromCart(itemReference));
                 },
               ),
             ],

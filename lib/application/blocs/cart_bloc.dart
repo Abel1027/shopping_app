@@ -9,7 +9,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   @override
   CartState get initialState => CartState.init();
 
-  Cart myCart = Cart(items: <Item>[], total: 0.0);
+  Cart myCart = Cart(itemReferences: <ItemReference>[], total: 0.0);
 
   @override
   Stream<CartState> mapEventToState(CartEvent event) async* {
@@ -20,27 +20,33 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           await shopApi.addToCart(event.itemReference.reference);
 
       if (cartResponse.response == Responses.OK) {
-        List<Item> newItems;
+        List<ItemReference> newItemReferences;
 
-        int itemIndex = myCart.items.indexWhere(
-            (item) => item.productId == event.itemReference.item.productId);
+        int itemIndex = myCart.itemReferences.indexWhere((itemReference) =>
+            itemReference.item.productId == event.itemReference.item.productId);
 
         if (itemIndex == -1) {
-          newItems = myCart.items;
-          newItems.add(event.itemReference.item.copyWith(availability: 1));
+          newItemReferences = myCart.itemReferences;
+          newItemReferences.add(event.itemReference.copyWith(
+              item: event.itemReference.item.copyWith(availability: 1)));
         } else {
-          newItems = myCart.items
-              .map((item) => item.copyWith(
-                  availability:
-                      (event.itemReference.item.productId == item.productId)
-                          ? item.availability + 1
-                          : item.availability))
+          newItemReferences = myCart.itemReferences
+              .map((itemReference) => itemReference.copyWith(
+                  item: itemReference.item.copyWith(
+                      availability: (event.itemReference.item.productId ==
+                              itemReference.item.productId)
+                          ? itemReference.item.availability + 1
+                          : itemReference.item.availability)))
               .toList();
         }
-        double newTotal = newItems.fold(
-            0, (sum, item) => sum + item.availability * item.price);
+        double newTotal = newItemReferences.fold(
+            0,
+            (sum, itemReference) =>
+                sum +
+                itemReference.item.availability * itemReference.item.price);
 
-        myCart = myCart.copyWith(items: newItems, total: newTotal);
+        myCart =
+            myCart.copyWith(itemReferences: newItemReferences, total: newTotal);
 
         yield CartState.success(
             cart: myCart, message: 'Item added successfully!');
@@ -58,17 +64,23 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     } else if (event is RemoveFromCartEvent) {
       yield CartState.loading();
 
-      CartResponse cartResponse = await shopApi.removeFromCart(event.itemId);
+      CartResponse cartResponse =
+          await shopApi.removeFromCart(event.itemReference.reference);
 
       if (cartResponse.response == Responses.OK) {
-        List<Item> newItems = myCart.items
-            .where((item) => item.productId != event.itemId)
+        List<ItemReference> newItemReferences = myCart.itemReferences
+            .where((itemReference) =>
+                itemReference.reference.id != event.itemReference.reference.id)
             .toList();
 
-        double newTotal = newItems.fold(
-            0, (sum, item) => sum + item.availability * item.price);
+        double newTotal = newItemReferences.fold(
+            0,
+            (sum, itemReference) =>
+                sum +
+                itemReference.item.availability * itemReference.item.price);
 
-        myCart = myCart.copyWith(items: newItems, total: newTotal);
+        myCart =
+            myCart.copyWith(itemReferences: newItemReferences, total: newTotal);
 
         yield CartState.success(
             cart: myCart, message: 'Items removed successfully!');
@@ -89,7 +101,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       CartResponse cartResponse = await shopApi.pay();
 
       if (cartResponse.response == Responses.OK) {
-        myCart = myCart.copyWith(items: <Item>[], total: 0.0);
+        myCart = myCart.copyWith(itemReferences: <ItemReference>[], total: 0.0);
 
         yield CartState.success(
             cart: myCart, message: 'Payment processed successfully!');

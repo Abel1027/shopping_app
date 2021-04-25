@@ -8,6 +8,7 @@ abstract class CartEvent with _$CartEvent {
   const factory CartEvent.loadCart() = LoadCartEvent;
   const factory CartEvent.addToCart(ItemReference itemReference) =
       AddToCartEvent;
-  const factory CartEvent.removeFromCart(String itemId) = RemoveFromCartEvent;
+  const factory CartEvent.removeFromCart(ItemReference itemReference) =
+      RemoveFromCartEvent;
   const factory CartEvent.pay() = PayEvent;
 }

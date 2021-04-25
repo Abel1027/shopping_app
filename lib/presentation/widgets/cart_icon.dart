@@ -53,7 +53,10 @@ class CartTouchable extends StatelessWidget {
       captureInheritedThemes: false,
       icon: Badge(
         badgeContent: Text(
-          cart.items.fold(0, (sum, item) => sum + item.availability).toString(),
+          cart.itemReferences
+              .fold(0,
+                  (sum, itemReference) => sum + itemReference.item.availability)
+              .toString(),
           style: TextStyle(color: Colors.white),
         ),
         child: Icon(

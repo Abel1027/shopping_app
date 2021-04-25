@@ -57,7 +57,7 @@ class ShopAPI {
     }
   }
 
-  Future<CartResponse> removeFromCart(String itemId) async {
+  Future<CartResponse> removeFromCart(DocumentReference reference) async {
     try {
       // throw FormatException('format except');
       return CartResponse(Responses.OK);

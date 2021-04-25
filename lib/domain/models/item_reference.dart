@@ -1,9 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/models.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'models.dart';
 
-class ItemReference {
-  final Item item;
-  final DocumentReference reference;
+part 'item_reference.freezed.dart';
 
-  const ItemReference({this.item, this.reference});
+@freezed
+abstract class ItemReference with _$ItemReference {
+  const factory ItemReference({
+    Item item,
+    DocumentReference reference,
+  }) = _ItemReference;
 }
