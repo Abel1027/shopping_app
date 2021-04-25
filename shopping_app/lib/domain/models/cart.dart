@@ -6,7 +6,7 @@ part 'cart.freezed.dart';
 @freezed
 abstract class Cart with _$Cart {
   const factory Cart({
-    List<CountableItem> items,
+    List<Item> items,
     double total,
   }) = _Cart;
 }

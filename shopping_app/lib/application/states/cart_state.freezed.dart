@@ -24,17 +24,18 @@ class _$CartStateTearOff {
   }
 
 // ignore: unused_element
-  _CartLoadSuccess success(Cart cart) {
+  _CartLoadSuccess success({Cart cart, String message}) {
     return _CartLoadSuccess(
-      cart,
+      cart: cart,
+      message: message,
     );
   }
 
 // ignore: unused_element
-  _CartError error({@required String title, @required String subtitle}) {
+  _CartError error({Cart cart, String message}) {
     return _CartError(
-      title: title,
-      subtitle: subtitle,
+      cart: cart,
+      message: message,
     );
   }
 }
@@ -49,15 +50,15 @@ mixin _$CartState {
   TResult when<TResult extends Object>({
     @required TResult init(),
     @required TResult loading(),
-    @required TResult success(Cart cart),
-    @required TResult error(String title, String subtitle),
+    @required TResult success(Cart cart, String message),
+    @required TResult error(Cart cart, String message),
   });
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult init(),
     TResult loading(),
-    TResult success(Cart cart),
-    TResult error(String title, String subtitle),
+    TResult success(Cart cart, String message),
+    TResult error(Cart cart, String message),
     @required TResult orElse(),
   });
   @optionalTypeArgs
@@ -132,8 +133,8 @@ class _$_CartStateInit implements _CartStateInit {
   TResult when<TResult extends Object>({
     @required TResult init(),
     @required TResult loading(),
-    @required TResult success(Cart cart),
-    @required TResult error(String title, String subtitle),
+    @required TResult success(Cart cart, String message),
+    @required TResult error(Cart cart, String message),
   }) {
     assert(init != null);
     assert(loading != null);
@@ -147,8 +148,8 @@ class _$_CartStateInit implements _CartStateInit {
   TResult maybeWhen<TResult extends Object>({
     TResult init(),
     TResult loading(),
-    TResult success(Cart cart),
-    TResult error(String title, String subtitle),
+    TResult success(Cart cart, String message),
+    TResult error(Cart cart, String message),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -235,8 +236,8 @@ class _$_CartLoadInProgress implements _CartLoadInProgress {
   TResult when<TResult extends Object>({
     @required TResult init(),
     @required TResult loading(),
-    @required TResult success(Cart cart),
-    @required TResult error(String title, String subtitle),
+    @required TResult success(Cart cart, String message),
+    @required TResult error(Cart cart, String message),
   }) {
     assert(init != null);
     assert(loading != null);
@@ -250,8 +251,8 @@ class _$_CartLoadInProgress implements _CartLoadInProgress {
   TResult maybeWhen<TResult extends Object>({
     TResult init(),
     TResult loading(),
-    TResult success(Cart cart),
-    TResult error(String title, String subtitle),
+    TResult success(Cart cart, String message),
+    TResult error(Cart cart, String message),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -302,7 +303,7 @@ abstract class _$CartLoadSuccessCopyWith<$Res> {
   factory _$CartLoadSuccessCopyWith(
           _CartLoadSuccess value, $Res Function(_CartLoadSuccess) then) =
       __$CartLoadSuccessCopyWithImpl<$Res>;
-  $Res call({Cart cart});
+  $Res call({Cart cart, String message});
 
   $CartCopyWith<$Res> get cart;
 }
@@ -320,9 +321,11 @@ class __$CartLoadSuccessCopyWithImpl<$Res> extends _$CartStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object cart = freezed,
+    Object message = freezed,
   }) {
     return _then(_CartLoadSuccess(
-      cart == freezed ? _value.cart : cart as Cart,
+      cart: cart == freezed ? _value.cart : cart as Cart,
+      message: message == freezed ? _value.message : message as String,
     ));
   }
 
@@ -339,14 +342,16 @@ class __$CartLoadSuccessCopyWithImpl<$Res> extends _$CartStateCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_CartLoadSuccess implements _CartLoadSuccess {
-  const _$_CartLoadSuccess(this.cart) : assert(cart != null);
+  const _$_CartLoadSuccess({this.cart, this.message});
 
   @override
   final Cart cart;
+  @override
+  final String message;
 
   @override
   String toString() {
-    return 'CartState.success(cart: $cart)';
+    return 'CartState.success(cart: $cart, message: $message)';
   }
 
   @override
@@ -354,12 +359,16 @@ class _$_CartLoadSuccess implements _CartLoadSuccess {
     return identical(this, other) ||
         (other is _CartLoadSuccess &&
             (identical(other.cart, cart) ||
-                const DeepCollectionEquality().equals(other.cart, cart)));
+                const DeepCollectionEquality().equals(other.cart, cart)) &&
+            (identical(other.message, message) ||
+                const DeepCollectionEquality().equals(other.message, message)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(cart);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(cart) ^
+      const DeepCollectionEquality().hash(message);
 
   @JsonKey(ignore: true)
   @override
@@ -371,14 +380,14 @@ class _$_CartLoadSuccess implements _CartLoadSuccess {
   TResult when<TResult extends Object>({
     @required TResult init(),
     @required TResult loading(),
-    @required TResult success(Cart cart),
-    @required TResult error(String title, String subtitle),
+    @required TResult success(Cart cart, String message),
+    @required TResult error(Cart cart, String message),
   }) {
     assert(init != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
-    return success(cart);
+    return success(cart, message);
   }
 
   @override
@@ -386,13 +395,13 @@ class _$_CartLoadSuccess implements _CartLoadSuccess {
   TResult maybeWhen<TResult extends Object>({
     TResult init(),
     TResult loading(),
-    TResult success(Cart cart),
-    TResult error(String title, String subtitle),
+    TResult success(Cart cart, String message),
+    TResult error(Cart cart, String message),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (success != null) {
-      return success(cart);
+      return success(cart, message);
     }
     return orElse();
   }
@@ -430,9 +439,11 @@ class _$_CartLoadSuccess implements _CartLoadSuccess {
 }
 
 abstract class _CartLoadSuccess implements CartState {
-  const factory _CartLoadSuccess(Cart cart) = _$_CartLoadSuccess;
+  const factory _CartLoadSuccess({Cart cart, String message}) =
+      _$_CartLoadSuccess;
 
   Cart get cart;
+  String get message;
   @JsonKey(ignore: true)
   _$CartLoadSuccessCopyWith<_CartLoadSuccess> get copyWith;
 }
@@ -442,7 +453,9 @@ abstract class _$CartErrorCopyWith<$Res> {
   factory _$CartErrorCopyWith(
           _CartError value, $Res Function(_CartError) then) =
       __$CartErrorCopyWithImpl<$Res>;
-  $Res call({String title, String subtitle});
+  $Res call({Cart cart, String message});
+
+  $CartCopyWith<$Res> get cart;
 }
 
 /// @nodoc
@@ -456,48 +469,55 @@ class __$CartErrorCopyWithImpl<$Res> extends _$CartStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object title = freezed,
-    Object subtitle = freezed,
+    Object cart = freezed,
+    Object message = freezed,
   }) {
     return _then(_CartError(
-      title: title == freezed ? _value.title : title as String,
-      subtitle: subtitle == freezed ? _value.subtitle : subtitle as String,
+      cart: cart == freezed ? _value.cart : cart as Cart,
+      message: message == freezed ? _value.message : message as String,
     ));
+  }
+
+  @override
+  $CartCopyWith<$Res> get cart {
+    if (_value.cart == null) {
+      return null;
+    }
+    return $CartCopyWith<$Res>(_value.cart, (value) {
+      return _then(_value.copyWith(cart: value));
+    });
   }
 }
 
 /// @nodoc
 class _$_CartError implements _CartError {
-  const _$_CartError({@required this.title, @required this.subtitle})
-      : assert(title != null),
-        assert(subtitle != null);
+  const _$_CartError({this.cart, this.message});
 
   @override
-  final String title;
+  final Cart cart;
   @override
-  final String subtitle;
+  final String message;
 
   @override
   String toString() {
-    return 'CartState.error(title: $title, subtitle: $subtitle)';
+    return 'CartState.error(cart: $cart, message: $message)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _CartError &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.subtitle, subtitle) ||
-                const DeepCollectionEquality()
-                    .equals(other.subtitle, subtitle)));
+            (identical(other.cart, cart) ||
+                const DeepCollectionEquality().equals(other.cart, cart)) &&
+            (identical(other.message, message) ||
+                const DeepCollectionEquality().equals(other.message, message)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(subtitle);
+      const DeepCollectionEquality().hash(cart) ^
+      const DeepCollectionEquality().hash(message);
 
   @JsonKey(ignore: true)
   @override
@@ -509,14 +529,14 @@ class _$_CartError implements _CartError {
   TResult when<TResult extends Object>({
     @required TResult init(),
     @required TResult loading(),
-    @required TResult success(Cart cart),
-    @required TResult error(String title, String subtitle),
+    @required TResult success(Cart cart, String message),
+    @required TResult error(Cart cart, String message),
   }) {
     assert(init != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
-    return error(title, subtitle);
+    return error(cart, message);
   }
 
   @override
@@ -524,13 +544,13 @@ class _$_CartError implements _CartError {
   TResult maybeWhen<TResult extends Object>({
     TResult init(),
     TResult loading(),
-    TResult success(Cart cart),
-    TResult error(String title, String subtitle),
+    TResult success(Cart cart, String message),
+    TResult error(Cart cart, String message),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (error != null) {
-      return error(title, subtitle);
+      return error(cart, message);
     }
     return orElse();
   }
@@ -568,11 +588,10 @@ class _$_CartError implements _CartError {
 }
 
 abstract class _CartError implements CartState {
-  const factory _CartError(
-      {@required String title, @required String subtitle}) = _$_CartError;
+  const factory _CartError({Cart cart, String message}) = _$_CartError;
 
-  String get title;
-  String get subtitle;
+  Cart get cart;
+  String get message;
   @JsonKey(ignore: true)
   _$CartErrorCopyWith<_CartError> get copyWith;
 }

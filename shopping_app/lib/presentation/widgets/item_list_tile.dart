@@ -9,9 +9,9 @@ import '../../utils/utils.dart';
 import 'widgets.dart';
 
 class ItemListTile extends StatefulWidget {
-  final Item item;
+  final ItemReference itemReference;
 
-  ItemListTile(this.item);
+  ItemListTile(this.itemReference);
 
   @override
   _ItemListTileState createState() => _ItemListTileState();
@@ -24,16 +24,16 @@ class _ItemListTileState extends State<ItemListTile> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          widget.item.title,
+          widget.itemReference.item.title,
           overflow: TextOverflow.visible,
           style: Theme.of(context).textTheme.subtitle1.copyWith(
                 fontSize: 16.0,
               ),
         ),
         SizedBox(height: 6.0),
-        if (widget.item.price != null)
+        if (widget.itemReference.item.price != null)
           PricePrint(
-            price: widget.item.price,
+            price: widget.itemReference.item.price,
             currency: 'USD',
           ),
         Divider(thickness: 0.3, height: 6.0),
@@ -52,7 +52,7 @@ class _ItemListTileState extends State<ItemListTile> {
                 title: Text('Details'),
                 content: //Text(state.message),
                     Text(
-                  widget.item.description,
+                  widget.itemReference.item.description,
                 ),
                 actions: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -78,7 +78,7 @@ class _ItemListTileState extends State<ItemListTile> {
             onTap: () {
               _addToCart(
                 context,
-                widget.item.productId,
+                widget.itemReference,
               );
             },
           ),
@@ -100,7 +100,8 @@ class _ItemListTileState extends State<ItemListTile> {
             width: min(120, 0.33 * screenWidth),
             child: BlocProvider<ItemImageBloc>(
               create: (BuildContext context) => ItemImageBloc()
-                ..add(ItemImageEvent.loadItemImage(widget.item.imageUrl)),
+                ..add(ItemImageEvent.loadItemImage(
+                    widget.itemReference.item.imageUrl)),
               child: BlocBuilder<ItemImageBloc, ItemImageState>(
                 builder: (context, state) => state.when(
                   loading: () => CircularProgressIndicatorWrapper(120.0),
@@ -150,7 +151,7 @@ class _ItemImageDecoration extends StatelessWidget {
 
 void _addToCart(
   BuildContext context,
-  String itemId,
+  ItemReference itemReference,
 ) {
   BlocProvider.of<CartBloc>(context).state.maybeWhen(
         loading: () => Scaffold.of(context)
@@ -160,7 +161,7 @@ void _addToCart(
                 'Please wait for the server to respond before adding another '
                 'item to the cart.'),
           )),
-        orElse: () =>
-            BlocProvider.of<CartBloc>(context).add(AddToCartEvent(itemId)),
+        orElse: () => BlocProvider.of<CartBloc>(context)
+            .add(AddToCartEvent(itemReference)),
       );
 }

@@ -17,7 +17,7 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
 
       switch (getItemsResponse.response) {
         case Responses.OK:
-          yield ItemState.success(getItemsResponse.items);
+          yield ItemState.success(getItemsResponse.itemReferences);
           break;
         case Responses.UnknownError:
           yield ItemState.error(

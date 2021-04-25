@@ -24,9 +24,9 @@ class _$ItemStateTearOff {
   }
 
 // ignore: unused_element
-  _ItemLoadSuccess success(List<Item> items) {
+  _ItemLoadSuccess success(List<ItemReference> itemReferences) {
     return _ItemLoadSuccess(
-      items,
+      itemReferences,
     );
   }
 
@@ -53,14 +53,14 @@ mixin _$ItemState {
   TResult when<TResult extends Object>({
     @required TResult init(),
     @required TResult loading(),
-    @required TResult success(List<Item> items),
+    @required TResult success(List<ItemReference> itemReferences),
     @required TResult error(String imagePath, String title, String subtitle),
   });
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult init(),
     TResult loading(),
-    TResult success(List<Item> items),
+    TResult success(List<ItemReference> itemReferences),
     TResult error(String imagePath, String title, String subtitle),
     @required TResult orElse(),
   });
@@ -134,7 +134,7 @@ class _$_ItemInit implements _ItemInit {
   TResult when<TResult extends Object>({
     @required TResult init(),
     @required TResult loading(),
-    @required TResult success(List<Item> items),
+    @required TResult success(List<ItemReference> itemReferences),
     @required TResult error(String imagePath, String title, String subtitle),
   }) {
     assert(init != null);
@@ -149,7 +149,7 @@ class _$_ItemInit implements _ItemInit {
   TResult maybeWhen<TResult extends Object>({
     TResult init(),
     TResult loading(),
-    TResult success(List<Item> items),
+    TResult success(List<ItemReference> itemReferences),
     TResult error(String imagePath, String title, String subtitle),
     @required TResult orElse(),
   }) {
@@ -237,7 +237,7 @@ class _$_ItemLoadInProgress implements _ItemLoadInProgress {
   TResult when<TResult extends Object>({
     @required TResult init(),
     @required TResult loading(),
-    @required TResult success(List<Item> items),
+    @required TResult success(List<ItemReference> itemReferences),
     @required TResult error(String imagePath, String title, String subtitle),
   }) {
     assert(init != null);
@@ -252,7 +252,7 @@ class _$_ItemLoadInProgress implements _ItemLoadInProgress {
   TResult maybeWhen<TResult extends Object>({
     TResult init(),
     TResult loading(),
-    TResult success(List<Item> items),
+    TResult success(List<ItemReference> itemReferences),
     TResult error(String imagePath, String title, String subtitle),
     @required TResult orElse(),
   }) {
@@ -304,7 +304,7 @@ abstract class _$ItemLoadSuccessCopyWith<$Res> {
   factory _$ItemLoadSuccessCopyWith(
           _ItemLoadSuccess value, $Res Function(_ItemLoadSuccess) then) =
       __$ItemLoadSuccessCopyWithImpl<$Res>;
-  $Res call({List<Item> items});
+  $Res call({List<ItemReference> itemReferences});
 }
 
 /// @nodoc
@@ -319,37 +319,42 @@ class __$ItemLoadSuccessCopyWithImpl<$Res> extends _$ItemStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object items = freezed,
+    Object itemReferences = freezed,
   }) {
     return _then(_ItemLoadSuccess(
-      items == freezed ? _value.items : items as List<Item>,
+      itemReferences == freezed
+          ? _value.itemReferences
+          : itemReferences as List<ItemReference>,
     ));
   }
 }
 
 /// @nodoc
 class _$_ItemLoadSuccess implements _ItemLoadSuccess {
-  const _$_ItemLoadSuccess(this.items) : assert(items != null);
+  const _$_ItemLoadSuccess(this.itemReferences)
+      : assert(itemReferences != null);
 
   @override
-  final List<Item> items;
+  final List<ItemReference> itemReferences;
 
   @override
   String toString() {
-    return 'ItemState.success(items: $items)';
+    return 'ItemState.success(itemReferences: $itemReferences)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _ItemLoadSuccess &&
-            (identical(other.items, items) ||
-                const DeepCollectionEquality().equals(other.items, items)));
+            (identical(other.itemReferences, itemReferences) ||
+                const DeepCollectionEquality()
+                    .equals(other.itemReferences, itemReferences)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(items);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(itemReferences);
 
   @JsonKey(ignore: true)
   @override
@@ -361,14 +366,14 @@ class _$_ItemLoadSuccess implements _ItemLoadSuccess {
   TResult when<TResult extends Object>({
     @required TResult init(),
     @required TResult loading(),
-    @required TResult success(List<Item> items),
+    @required TResult success(List<ItemReference> itemReferences),
     @required TResult error(String imagePath, String title, String subtitle),
   }) {
     assert(init != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
-    return success(items);
+    return success(itemReferences);
   }
 
   @override
@@ -376,13 +381,13 @@ class _$_ItemLoadSuccess implements _ItemLoadSuccess {
   TResult maybeWhen<TResult extends Object>({
     TResult init(),
     TResult loading(),
-    TResult success(List<Item> items),
+    TResult success(List<ItemReference> itemReferences),
     TResult error(String imagePath, String title, String subtitle),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (success != null) {
-      return success(items);
+      return success(itemReferences);
     }
     return orElse();
   }
@@ -420,9 +425,10 @@ class _$_ItemLoadSuccess implements _ItemLoadSuccess {
 }
 
 abstract class _ItemLoadSuccess implements ItemState {
-  const factory _ItemLoadSuccess(List<Item> items) = _$_ItemLoadSuccess;
+  const factory _ItemLoadSuccess(List<ItemReference> itemReferences) =
+      _$_ItemLoadSuccess;
 
-  List<Item> get items;
+  List<ItemReference> get itemReferences;
   @JsonKey(ignore: true)
   _$ItemLoadSuccessCopyWith<_ItemLoadSuccess> get copyWith;
 }
@@ -509,7 +515,7 @@ class _$_ItemError implements _ItemError {
   TResult when<TResult extends Object>({
     @required TResult init(),
     @required TResult loading(),
-    @required TResult success(List<Item> items),
+    @required TResult success(List<ItemReference> itemReferences),
     @required TResult error(String imagePath, String title, String subtitle),
   }) {
     assert(init != null);
@@ -524,7 +530,7 @@ class _$_ItemError implements _ItemError {
   TResult maybeWhen<TResult extends Object>({
     TResult init(),
     TResult loading(),
-    TResult success(List<Item> items),
+    TResult success(List<ItemReference> itemReferences),
     TResult error(String imagePath, String title, String subtitle),
     @required TResult orElse(),
   }) {

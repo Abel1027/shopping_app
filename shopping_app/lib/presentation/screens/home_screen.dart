@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
         barrierDismissible: false, // user must tap button!
         builder: (c) => NewDesignAlertDialog(
           title: Text('Alert!'),
-          content: Text('¿Do you want to quit?'),
+          content: Text('Do you want to quit?'),
           actions: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [

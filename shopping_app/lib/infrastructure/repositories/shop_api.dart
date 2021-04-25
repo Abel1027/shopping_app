@@ -9,13 +9,17 @@ class ShopAPI {
 
   Future<GetItemsResponse> getItems() async {
     try {
-      List<Item> items = <Item>[];
+      List<ItemReference> itemReferences = <ItemReference>[];
       QuerySnapshot querySnapshot =
           await firestoreInstance.collection('products').get();
       querySnapshot.docs.forEach((result) {
-        items.add(Item.fromJson(result.data()));
+        itemReferences.add(
+          ItemReference(
+              item: Item.fromJson(result.data()), reference: result.reference),
+        );
       });
-      return GetItemsResponse(response: Responses.OK, items: items);
+      return GetItemsResponse(
+          response: Responses.OK, itemReferences: itemReferences);
     } catch (e) {
       print('getItemsCatch: ${e.toString()}');
       return GetItemsResponse(response: Responses.UnknownError);
@@ -32,110 +36,57 @@ class ShopAPI {
     }
   }
 
-  Future<CartResponse> loadCart() async {
+  Future<CartResponse> addToCart(DocumentReference reference) async {
     try {
-      // throw FormatException('format except');
-      Cart cart = Cart(
-        items: [
-          CountableItem(
-            item: Item(
-              productId: '123',
-              title: 'Chanel Coco',
-              description:
-                  'Fresh scent, made with notes of jasmine, rose, patchouli and vetiver.',
-              imageUrl:
-                  'https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto:good,f_jpg,fl_lossy,dpr_1.2/w_1920/coco-mademoiselle-eau-de-parfum-intense-spray-3-4fl-oz--packshot-default-116660-8831021678622.jpg',
-              price: 82.00,
-            ),
-            amount: 2,
-          ),
-        ],
-        total: 98.99,
-      );
-      return CartResponse(response: Responses.OK, cart: cart);
-    } catch (e) {
-      print('loadCartCatch: ${e.toString()}');
-      return CartResponse(response: Responses.UnknownError);
-    }
-  }
+      bool success = await FirebaseFirestore.instance
+          .runTransaction<bool>((transaction) async {
+        final DocumentSnapshot txSnapshot = await transaction.get(reference);
+        if (!txSnapshot.exists) {
+          throw Exception('Document does not exist!');
+        }
+        final int updatedValue = txSnapshot.data()['availability'];
+        if (updatedValue == 0) return false;
+        transaction.update(reference, {'availability': updatedValue - 1});
+        return true;
+      });
 
-  Future<CartResponse> addToCart(String itemId) async {
-    try {
-      // throw FormatException('format except');
-      Cart cart = Cart(
-        items: [
-          CountableItem(
-            item: Item(
-              productId: '123',
-              title: 'Chanel Coco',
-              description:
-                  'Fresh scent, made with notes of jasmine, rose, patchouli and vetiver.',
-              imageUrl:
-                  'https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto:good,f_jpg,fl_lossy,dpr_1.2/w_1920/coco-mademoiselle-eau-de-parfum-intense-spray-3-4fl-oz--packshot-default-116660-8831021678622.jpg',
-              price: 82.00,
-            ),
-            amount: 2,
-          ),
-          CountableItem(
-            item: Item(
-              productId: '456',
-              title: "Victoria's Secret Temptation Hand & Body Cream",
-              description:
-                  "Temptation by Victoria's Secret is a Floral Fruity Gourmand fragrance for women.",
-              imageUrl:
-                  'https://www.cosmetify.com/images/products/victorias-secret-temptation-hand-body-cream-200ml-victorias-secret-temptation-hand-body-cream-200ml.jpg',
-              price: 16.99,
-            ),
-            amount: 1,
-          ),
-        ],
-        total: 98.99,
-      );
-      return CartResponse(response: Responses.OK, cart: cart);
+      return CartResponse(success ? Responses.OK : Responses.OperationFailed);
     } catch (e) {
       print('addToCartCatch: ${e.toString()}');
-      return CartResponse(response: Responses.UnknownError);
+      return CartResponse(Responses.UnknownError);
     }
   }
 
   Future<CartResponse> removeFromCart(String itemId) async {
     try {
       // throw FormatException('format except');
-      Cart cart = Cart(
-        items: [
-          CountableItem(
-            item: Item(
-              productId: '123',
-              title: 'Chanel Coco',
-              description:
-                  'Fresh scent, made with notes of jasmine, rose, patchouli and vetiver.',
-              imageUrl:
-                  'https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto:good,f_jpg,fl_lossy,dpr_1.2/w_1920/coco-mademoiselle-eau-de-parfum-intense-spray-3-4fl-oz--packshot-default-116660-8831021678622.jpg',
-              price: 82.00,
-            ),
-            amount: 1,
-          ),
-        ],
-        total: 82.00,
-      );
-      return CartResponse(response: Responses.OK, cart: cart);
+      return CartResponse(Responses.OK);
     } catch (e) {
       print('removeFromCartCatch: ${e.toString()}');
-      return CartResponse(response: Responses.UnknownError);
+      return CartResponse(Responses.UnknownError);
+    }
+  }
+
+  Future<CartResponse> pay() async {
+    try {
+      // throw FormatException('format except');
+      return CartResponse(Responses.OK);
+    } catch (e) {
+      print('removeFromCartCatch: ${e.toString()}');
+      return CartResponse(Responses.UnknownError);
     }
   }
 }
 
 class GetItemsResponse {
   final Responses response;
-  final List<Item> items;
+  final List<ItemReference> itemReferences;
 
-  const GetItemsResponse({this.response, this.items});
+  const GetItemsResponse({this.response, this.itemReferences});
 }
 
 class CartResponse {
   final Responses response;
-  final Cart cart;
 
-  const CartResponse({this.response, this.cart});
+  const CartResponse(this.response);
 }

@@ -36,51 +36,43 @@ class _CartIconState extends State<CartIcon> {
             ),
             onPressed: () {},
           ),
-          success: (cart) => CartTouchable(cart: cart, isSuccess: true),
-          error: (title, subtitle) {
-            Scaffold.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(SnackBar(
-                content: Text('$title: $subtitle'),
-              ));
-            return CartTouchable(cart: null, isSuccess: false);
-          },
+          success: (cart, message) => CartTouchable(cart),
+          error: (cart, message) => CartTouchable(cart),
         ),
       );
 }
 
 class CartTouchable extends StatelessWidget {
   final Cart cart;
-  final bool isSuccess;
 
-  const CartTouchable({this.cart, this.isSuccess});
+  const CartTouchable(this.cart);
 
   @override
-  Widget build(BuildContext context) => PopupMenuButton(
-        captureInheritedThemes: false,
-        icon: Badge(
-          badgeContent: Text(
-            isSuccess
-                ? '1' //state.cart?.items?.length?.toString()
-                : 'x',
-            style: TextStyle(color: Colors.white),
-          ),
-          child: Icon(
-            Icons.shopping_cart,
-            color: Colors.white,
-          ),
-          toAnimate: false,
-          badgeColor: Constants.redNewDesign,
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+      captureInheritedThemes: false,
+      icon: Badge(
+        badgeContent: Text(
+          cart.items.fold(0, (sum, item) => sum + item.availability).toString(),
+          style: TextStyle(color: Colors.white),
         ),
-        itemBuilder: (BuildContext context) {
-          return [
-            PopupMenuItem(
-              child: CartPopupMenu(
-                cartBloc: BlocProvider.of<CartBloc>(context),
-                cart: cart,
-              ),
+        child: Icon(
+          Icons.shopping_cart,
+          color: Colors.white,
+        ),
+        toAnimate: false,
+        badgeColor: Constants.redNewDesign,
+      ),
+      itemBuilder: (BuildContext context) {
+        return [
+          PopupMenuItem(
+            child: CartPopupMenu(
+              cartBloc: BlocProvider.of<CartBloc>(context),
+              cart: cart,
             ),
-          ];
-        },
-      );
+          ),
+        ];
+      },
+    );
+  }
 }

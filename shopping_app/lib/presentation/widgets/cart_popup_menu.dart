@@ -19,7 +19,7 @@ class CartPopupMenu extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: _cartPopupMenuChildren(
-            context: context, cartBloc: cartBloc, cItems: cart.items),
+            context: context, cartBloc: cartBloc, items: cart.items),
       ),
     );
   }
@@ -27,14 +27,14 @@ class CartPopupMenu extends StatelessWidget {
   List<Widget> _cartPopupMenuChildren({
     BuildContext context,
     CartBloc cartBloc,
-    List<CountableItem> cItems,
+    List<Item> items,
   }) {
     var children = <Widget>[];
 
     children
-      ..addAll(cItems.map((cItem) => _CartPopupItem(
+      ..addAll(items.map((item) => _CartPopupItem(
             cartBloc: cartBloc,
-            cItem: cItem,
+            item: item,
           )))
       ..add(Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,33 +48,30 @@ class CartPopupMenu extends StatelessWidget {
                   style: TextStyle(color: Theme.of(context).indicatorColor),
                 ),
                 onPressed: () async {
-                  return showDialog<void>(
-                    context: context,
-                    barrierDismissible: false, // user must tap button!
-                    builder: (BuildContext context) {
-                      return NewDesignAlertDialog(
-                        title: Text('Alert!'),
-                        content: Text(
-                          (cItems.length == 0)
-                              ? 'There are no items in the cart to pay.'
-                              : cartBloc.state.maybeWhen(
-                                  success: (cart) =>
-                                      'Payment has been completed successfully!!!',
-                                  orElse: () => 'Oops. Something is wrong!',
-                                ),
-                        ),
-                        actions: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            NewDesignButton(
-                              text: 'Close',
-                              onPressed: () => Navigator.of(context).pop(),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
+                  if (items.length == 0) {
+                    return showDialog<void>(
+                      context: context,
+                      barrierDismissible: false, // user must tap button!
+                      builder: (BuildContext context) {
+                        return NewDesignAlertDialog(
+                          title: Text('Alert!'),
+                          content:
+                              Text('There are no items in the cart to pay.'),
+                          actions: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              NewDesignButton(
+                                text: 'Close',
+                                onPressed: () => Navigator.of(context).pop(),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  }
+                  Navigator.of(context).pop();
+                  cartBloc.add(CartEvent.pay());
                 },
               ),
             ),
@@ -86,7 +83,7 @@ class CartPopupMenu extends StatelessWidget {
                 width: 130.0,
                 alignment: Alignment.centerRight,
                 child: cartBloc.state.maybeWhen(
-                  success: (cart) => PricePrint(
+                  success: (cart, message) => PricePrint(
                     price: cart.total,
                     currency: 'USD',
                   ),
@@ -106,11 +103,11 @@ class CartPopupMenu extends StatelessWidget {
 
 class _CartPopupItem extends StatelessWidget {
   final CartBloc cartBloc;
-  final CountableItem cItem;
+  final Item item;
 
   const _CartPopupItem({
     this.cartBloc,
-    this.cItem,
+    this.item,
   });
 
   @override
@@ -131,7 +128,7 @@ class _CartPopupItem extends StatelessWidget {
               padding: const EdgeInsets.all(2.0),
               child: BlocProvider<ItemImageBloc>(
                 create: (BuildContext context) => ItemImageBloc()
-                  ..add(ItemImageEvent.loadItemImage(cItem.item.imageUrl)),
+                  ..add(ItemImageEvent.loadItemImage(item.imageUrl)),
                 child: BlocBuilder<ItemImageBloc, ItemImageState>(
                   builder: (context, state) => state.when(
                     loading: () => CircularProgressIndicatorWrapper(120.0),
@@ -157,7 +154,7 @@ class _CartPopupItem extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                         child: Text(
-                          cItem.item.title,
+                          item.title,
                           style: Theme.of(context)
                               .textTheme
                               .subtitle1
@@ -167,7 +164,7 @@ class _CartPopupItem extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 4.0, top: 2.0),
                         child: Text(
-                          '${cItem.amount.toString()} x \$${cItem.item.price.toString()} USD',
+                          '${item.availability.toString()} x \$${item.price.toString()} USD',
                           style: Theme.of(context)
                               .textTheme
                               .subtitle2
@@ -182,8 +179,7 @@ class _CartPopupItem extends StatelessWidget {
                       Expanded(child: SizedBox(width: 12.0)),
                       IconButton(
                         icon: Icon(Icons.delete),
-                        onPressed: () =>
-                            removeItem(context, cItem.item.productId),
+                        onPressed: () => removeItem(context, item.productId),
                       ),
                     ],
                   ),
@@ -203,8 +199,7 @@ class _CartPopupItem extends StatelessWidget {
       builder: (BuildContext context) {
         return NewDesignAlertDialog(
           title: Text('Alert!'),
-          content:
-              Text('¿Are you sure you want to remove this item from cart?'),
+          content: Text('Are you sure you want to remove this item from cart?'),
           actions: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [

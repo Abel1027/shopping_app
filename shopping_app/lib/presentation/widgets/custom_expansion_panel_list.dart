@@ -6,9 +6,9 @@ import '../widgets/widgets.dart';
 
 class CustomExpansionPanelList extends StatefulWidget {
   final ItemBloc itemBloc;
-  final List<Item> items;
+  final List<ItemReference> itemReferences;
 
-  CustomExpansionPanelList({this.itemBloc, this.items});
+  CustomExpansionPanelList({this.itemBloc, this.itemReferences});
 
   @override
   _CustomExpansionPanelListState createState() =>
@@ -23,7 +23,7 @@ class _CustomExpansionPanelListState extends State<CustomExpansionPanelList> {
       child: RefreshIndicator(
         onRefresh: () async => widget.itemBloc.add(ItemEvent.loadItems()),
         child: ListView(
-          children: widget.items
+          children: widget.itemReferences
               .asMap()
               .entries
               .map(

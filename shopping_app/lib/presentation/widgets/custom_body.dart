@@ -12,36 +12,51 @@ class CustomBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<CartBloc>(context).add(CartEvent.loadCart());
-    return BlocProvider<ItemBloc>(
-      create: (BuildContext context) => ItemBloc()..add(LoadItemsEvent()),
-      child: BlocConsumer<ItemBloc, ItemState>(
-        listener: (context, state) {},
-        builder: (context, state) => state.when(
-          init: () => SizedBox.shrink(),
-          loading: () => Center(
-            child: CircularProgressIndicatorWrapper(120.0),
-          ),
-          success: (items) => (items.length > 0)
-              ? CustomExpansionPanelList(
-                  itemBloc: BlocProvider.of<ItemBloc>(context),
-                  items: items,
-                )
-              : Center(
-                  child: CustomErrorWidget(
-                    image: Constants.alert,
-                    title: 'Sorry',
-                    subtitle: 'Shop is closed!',
-                    onPressed: () => BlocProvider.of<ItemBloc>(context)
-                        .add(LoadItemsEvent()),
+    return BlocListener<CartBloc, CartState>(
+      listener: (context, state) {
+        state.maybeWhen(
+            success: (cart, message) => Scaffold.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(SnackBar(
+                content: Text(message),
+              )),
+            error: (cart, message) => Scaffold.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(SnackBar(
+                content: Text(message),
+              )),
+            orElse: () => SizedBox.shrink());
+      },
+      child: BlocProvider<ItemBloc>(
+        create: (BuildContext context) => ItemBloc()..add(LoadItemsEvent()),
+        child: BlocBuilder<ItemBloc, ItemState>(
+          builder: (context, state) => state.when(
+            init: () => SizedBox.shrink(),
+            loading: () => Center(
+              child: CircularProgressIndicatorWrapper(120.0),
+            ),
+            success: (itemReferences) => (itemReferences.length > 0)
+                ? CustomExpansionPanelList(
+                    itemBloc: BlocProvider.of<ItemBloc>(context),
+                    itemReferences: itemReferences,
+                  )
+                : Center(
+                    child: CustomErrorWidget(
+                      image: Constants.alert,
+                      title: 'Sorry',
+                      subtitle: 'Shop is closed!',
+                      onPressed: () => BlocProvider.of<ItemBloc>(context)
+                          .add(LoadItemsEvent()),
+                    ),
                   ),
-                ),
-          error: (imagePath, title, subtitle) => Center(
-            child: CustomErrorWidget(
-              image: imagePath,
-              title: title,
-              subtitle: subtitle,
-              onPressed: () =>
-                  BlocProvider.of<ItemBloc>(context).add(LoadItemsEvent()),
+            error: (imagePath, title, subtitle) => Center(
+              child: CustomErrorWidget(
+                image: imagePath,
+                title: title,
+                subtitle: subtitle,
+                onPressed: () =>
+                    BlocProvider.of<ItemBloc>(context).add(LoadItemsEvent()),
+              ),
             ),
           ),
         ),

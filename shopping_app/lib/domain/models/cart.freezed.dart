@@ -14,7 +14,7 @@ class _$CartTearOff {
   const _$CartTearOff();
 
 // ignore: unused_element
-  _Cart call({List<CountableItem> items, double total}) {
+  _Cart call({List<Item> items, double total}) {
     return _Cart(
       items: items,
       total: total,
@@ -28,7 +28,7 @@ const $Cart = _$CartTearOff();
 
 /// @nodoc
 mixin _$Cart {
-  List<CountableItem> get items;
+  List<Item> get items;
   double get total;
 
   @JsonKey(ignore: true)
@@ -39,7 +39,7 @@ mixin _$Cart {
 abstract class $CartCopyWith<$Res> {
   factory $CartCopyWith(Cart value, $Res Function(Cart) then) =
       _$CartCopyWithImpl<$Res>;
-  $Res call({List<CountableItem> items, double total});
+  $Res call({List<Item> items, double total});
 }
 
 /// @nodoc
@@ -56,7 +56,7 @@ class _$CartCopyWithImpl<$Res> implements $CartCopyWith<$Res> {
     Object total = freezed,
   }) {
     return _then(_value.copyWith(
-      items: items == freezed ? _value.items : items as List<CountableItem>,
+      items: items == freezed ? _value.items : items as List<Item>,
       total: total == freezed ? _value.total : total as double,
     ));
   }
@@ -67,7 +67,7 @@ abstract class _$CartCopyWith<$Res> implements $CartCopyWith<$Res> {
   factory _$CartCopyWith(_Cart value, $Res Function(_Cart) then) =
       __$CartCopyWithImpl<$Res>;
   @override
-  $Res call({List<CountableItem> items, double total});
+  $Res call({List<Item> items, double total});
 }
 
 /// @nodoc
@@ -85,7 +85,7 @@ class __$CartCopyWithImpl<$Res> extends _$CartCopyWithImpl<$Res>
     Object total = freezed,
   }) {
     return _then(_Cart(
-      items: items == freezed ? _value.items : items as List<CountableItem>,
+      items: items == freezed ? _value.items : items as List<Item>,
       total: total == freezed ? _value.total : total as double,
     ));
   }
@@ -96,7 +96,7 @@ class _$_Cart implements _Cart {
   const _$_Cart({this.items, this.total});
 
   @override
-  final List<CountableItem> items;
+  final List<Item> items;
   @override
   final double total;
 
@@ -128,10 +128,10 @@ class _$_Cart implements _Cart {
 }
 
 abstract class _Cart implements Cart {
-  const factory _Cart({List<CountableItem> items, double total}) = _$_Cart;
+  const factory _Cart({List<Item> items, double total}) = _$_Cart;
 
   @override
-  List<CountableItem> get items;
+  List<Item> get items;
   @override
   double get total;
   @override

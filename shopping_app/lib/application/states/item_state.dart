@@ -7,7 +7,8 @@ part 'item_state.freezed.dart';
 abstract class ItemState with _$ItemState {
   const factory ItemState.init() = _ItemInit;
   const factory ItemState.loading() = _ItemLoadInProgress;
-  const factory ItemState.success(List<Item> items) = _ItemLoadSuccess;
+  const factory ItemState.success(List<ItemReference> itemReferences) =
+      _ItemLoadSuccess;
   const factory ItemState.error({
     @required String imagePath,
     @required String title,
