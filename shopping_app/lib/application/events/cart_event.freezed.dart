@@ -19,14 +19,14 @@ class _$CartEventTearOff {
   }
 
 // ignore: unused_element
-  AddToCartEvent addToCart(int itemId) {
+  AddToCartEvent addToCart(String itemId) {
     return AddToCartEvent(
       itemId,
     );
   }
 
 // ignore: unused_element
-  RemoveFromCartEvent removeFromCart(int itemId) {
+  RemoveFromCartEvent removeFromCart(String itemId) {
     return RemoveFromCartEvent(
       itemId,
     );
@@ -42,14 +42,14 @@ mixin _$CartEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult loadCart(),
-    @required TResult addToCart(int itemId),
-    @required TResult removeFromCart(int itemId),
+    @required TResult addToCart(String itemId),
+    @required TResult removeFromCart(String itemId),
   });
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult loadCart(),
-    TResult addToCart(int itemId),
-    TResult removeFromCart(int itemId),
+    TResult addToCart(String itemId),
+    TResult removeFromCart(String itemId),
     @required TResult orElse(),
   });
   @optionalTypeArgs
@@ -121,8 +121,8 @@ class _$LoadCartEvent implements LoadCartEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult loadCart(),
-    @required TResult addToCart(int itemId),
-    @required TResult removeFromCart(int itemId),
+    @required TResult addToCart(String itemId),
+    @required TResult removeFromCart(String itemId),
   }) {
     assert(loadCart != null);
     assert(addToCart != null);
@@ -134,8 +134,8 @@ class _$LoadCartEvent implements LoadCartEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult loadCart(),
-    TResult addToCart(int itemId),
-    TResult removeFromCart(int itemId),
+    TResult addToCart(String itemId),
+    TResult removeFromCart(String itemId),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -183,7 +183,7 @@ abstract class $AddToCartEventCopyWith<$Res> {
   factory $AddToCartEventCopyWith(
           AddToCartEvent value, $Res Function(AddToCartEvent) then) =
       _$AddToCartEventCopyWithImpl<$Res>;
-  $Res call({int itemId});
+  $Res call({String itemId});
 }
 
 /// @nodoc
@@ -201,7 +201,7 @@ class _$AddToCartEventCopyWithImpl<$Res> extends _$CartEventCopyWithImpl<$Res>
     Object itemId = freezed,
   }) {
     return _then(AddToCartEvent(
-      itemId == freezed ? _value.itemId : itemId as int,
+      itemId == freezed ? _value.itemId : itemId as String,
     ));
   }
 }
@@ -211,7 +211,7 @@ class _$AddToCartEvent implements AddToCartEvent {
   const _$AddToCartEvent(this.itemId) : assert(itemId != null);
 
   @override
-  final int itemId;
+  final String itemId;
 
   @override
   String toString() {
@@ -239,8 +239,8 @@ class _$AddToCartEvent implements AddToCartEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult loadCart(),
-    @required TResult addToCart(int itemId),
-    @required TResult removeFromCart(int itemId),
+    @required TResult addToCart(String itemId),
+    @required TResult removeFromCart(String itemId),
   }) {
     assert(loadCart != null);
     assert(addToCart != null);
@@ -252,8 +252,8 @@ class _$AddToCartEvent implements AddToCartEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult loadCart(),
-    TResult addToCart(int itemId),
-    TResult removeFromCart(int itemId),
+    TResult addToCart(String itemId),
+    TResult removeFromCart(String itemId),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -293,9 +293,9 @@ class _$AddToCartEvent implements AddToCartEvent {
 }
 
 abstract class AddToCartEvent implements CartEvent {
-  const factory AddToCartEvent(int itemId) = _$AddToCartEvent;
+  const factory AddToCartEvent(String itemId) = _$AddToCartEvent;
 
-  int get itemId;
+  String get itemId;
   @JsonKey(ignore: true)
   $AddToCartEventCopyWith<AddToCartEvent> get copyWith;
 }
@@ -305,7 +305,7 @@ abstract class $RemoveFromCartEventCopyWith<$Res> {
   factory $RemoveFromCartEventCopyWith(
           RemoveFromCartEvent value, $Res Function(RemoveFromCartEvent) then) =
       _$RemoveFromCartEventCopyWithImpl<$Res>;
-  $Res call({int itemId});
+  $Res call({String itemId});
 }
 
 /// @nodoc
@@ -324,7 +324,7 @@ class _$RemoveFromCartEventCopyWithImpl<$Res>
     Object itemId = freezed,
   }) {
     return _then(RemoveFromCartEvent(
-      itemId == freezed ? _value.itemId : itemId as int,
+      itemId == freezed ? _value.itemId : itemId as String,
     ));
   }
 }
@@ -334,7 +334,7 @@ class _$RemoveFromCartEvent implements RemoveFromCartEvent {
   const _$RemoveFromCartEvent(this.itemId) : assert(itemId != null);
 
   @override
-  final int itemId;
+  final String itemId;
 
   @override
   String toString() {
@@ -362,8 +362,8 @@ class _$RemoveFromCartEvent implements RemoveFromCartEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult loadCart(),
-    @required TResult addToCart(int itemId),
-    @required TResult removeFromCart(int itemId),
+    @required TResult addToCart(String itemId),
+    @required TResult removeFromCart(String itemId),
   }) {
     assert(loadCart != null);
     assert(addToCart != null);
@@ -375,8 +375,8 @@ class _$RemoveFromCartEvent implements RemoveFromCartEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult loadCart(),
-    TResult addToCart(int itemId),
-    TResult removeFromCart(int itemId),
+    TResult addToCart(String itemId),
+    TResult removeFromCart(String itemId),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -416,9 +416,9 @@ class _$RemoveFromCartEvent implements RemoveFromCartEvent {
 }
 
 abstract class RemoveFromCartEvent implements CartEvent {
-  const factory RemoveFromCartEvent(int itemId) = _$RemoveFromCartEvent;
+  const factory RemoveFromCartEvent(String itemId) = _$RemoveFromCartEvent;
 
-  int get itemId;
+  String get itemId;
   @JsonKey(ignore: true)
   $RemoveFromCartEventCopyWith<RemoveFromCartEvent> get copyWith;
 }

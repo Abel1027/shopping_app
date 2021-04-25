@@ -78,7 +78,7 @@ class _ItemListTileState extends State<ItemListTile> {
             onTap: () {
               _addToCart(
                 context,
-                widget.item.id,
+                widget.item.productId,
               );
             },
           ),
@@ -150,7 +150,7 @@ class _ItemImageDecoration extends StatelessWidget {
 
 void _addToCart(
   BuildContext context,
-  int itemId,
+  String itemId,
 ) {
   BlocProvider.of<CartBloc>(context).state.maybeWhen(
         loading: () => Scaffold.of(context)

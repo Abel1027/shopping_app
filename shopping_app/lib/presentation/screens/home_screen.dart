@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shopping_app/application/events/cart_event.dart';
+import 'package:firebase_core/firebase_core.dart';
 import '../../application/blocs/blocs.dart';
+import '../utils/utils.dart';
 import '../widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen();
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +33,30 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      child: BlocProvider<CartBloc>(
-        create: (BuildContext context) => CartBloc()..add(CartEvent.loadCart()),
-        child: Scaffold(
-          appBar: CustomAppBar('Welcome to the shop'),
-          body: CustomBody(),
-        ),
+      child: FutureBuilder<FirebaseApp>(
+        future: _initialization,
+        builder: (context, snapshot) {
+          Widget myBody =
+              Center(child: CircularProgressIndicatorWrapper(120.0));
+          if (snapshot.hasError) {
+            myBody = Center(
+              child: Text(
+                'An error occurred loading data!!!',
+                style: TextStyle(color: Constants.redNewDesign),
+              ),
+            );
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            myBody = CustomBody();
+          }
+
+          return BlocProvider<CartBloc>(
+            create: (BuildContext context) => CartBloc(),
+            child: Scaffold(
+              appBar: CustomAppBar('Welcome to the shop'),
+              body: myBody,
+            ),
+          );
+        },
       ),
     );
   }

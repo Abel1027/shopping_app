@@ -182,7 +182,8 @@ class _CartPopupItem extends StatelessWidget {
                       Expanded(child: SizedBox(width: 12.0)),
                       IconButton(
                         icon: Icon(Icons.delete),
-                        onPressed: () => removeItem(context, cItem.item.id),
+                        onPressed: () =>
+                            removeItem(context, cItem.item.productId),
                       ),
                     ],
                   ),
@@ -195,7 +196,7 @@ class _CartPopupItem extends StatelessWidget {
     );
   }
 
-  void removeItem(BuildContext outerContext, int itemId) {
+  void removeItem(BuildContext outerContext, String itemId) {
     showDialog<void>(
       context: outerContext,
       barrierDismissible: false, // user must tap button!

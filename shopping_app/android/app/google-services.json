@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "730557204827",
+    "project_id": "shopeando-c0673",
+    "storage_bucket": "shopeando-c0673.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:730557204827:android:500527d2a8d1efe4f7727e",
+        "android_client_info": {
+          "package_name": "com.example.shopping_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "730557204827-05drjg6f5pki8p1o1n6eb9irc4gi6qqu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmKbBO1yGaGrqQAKVNRXKrytuxEL1Rg_4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "730557204827-05drjg6f5pki8p1o1n6eb9irc4gi6qqu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

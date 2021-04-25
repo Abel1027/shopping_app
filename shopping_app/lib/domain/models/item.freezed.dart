@@ -8,6 +8,9 @@ part of 'item.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+Item _$ItemFromJson(Map<String, dynamic> json) {
+  return _Item.fromJson(json);
+}
 
 /// @nodoc
 class _$ItemTearOff {
@@ -15,18 +18,25 @@ class _$ItemTearOff {
 
 // ignore: unused_element
   _Item call(
-      {@required int id,
+      {@required String productId,
       String title,
       String description,
       String imageUrl,
-      double price}) {
+      double price,
+      int availability}) {
     return _Item(
-      id: id,
+      productId: productId,
       title: title,
       description: description,
       imageUrl: imageUrl,
       price: price,
+      availability: availability,
     );
+  }
+
+// ignore: unused_element
+  Item fromJson(Map<String, Object> json) {
+    return Item.fromJson(json);
   }
 }
 
@@ -36,12 +46,14 @@ const $Item = _$ItemTearOff();
 
 /// @nodoc
 mixin _$Item {
-  int get id;
+  String get productId;
   String get title;
   String get description;
   String get imageUrl;
   double get price;
+  int get availability;
 
+  Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
   $ItemCopyWith<Item> get copyWith;
 }
@@ -51,11 +63,12 @@ abstract class $ItemCopyWith<$Res> {
   factory $ItemCopyWith(Item value, $Res Function(Item) then) =
       _$ItemCopyWithImpl<$Res>;
   $Res call(
-      {int id,
+      {String productId,
       String title,
       String description,
       String imageUrl,
-      double price});
+      double price,
+      int availability});
 }
 
 /// @nodoc
@@ -68,19 +81,22 @@ class _$ItemCopyWithImpl<$Res> implements $ItemCopyWith<$Res> {
 
   @override
   $Res call({
-    Object id = freezed,
+    Object productId = freezed,
     Object title = freezed,
     Object description = freezed,
     Object imageUrl = freezed,
     Object price = freezed,
+    Object availability = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed ? _value.id : id as int,
+      productId: productId == freezed ? _value.productId : productId as String,
       title: title == freezed ? _value.title : title as String,
       description:
           description == freezed ? _value.description : description as String,
       imageUrl: imageUrl == freezed ? _value.imageUrl : imageUrl as String,
       price: price == freezed ? _value.price : price as double,
+      availability:
+          availability == freezed ? _value.availability : availability as int,
     ));
   }
 }
@@ -91,11 +107,12 @@ abstract class _$ItemCopyWith<$Res> implements $ItemCopyWith<$Res> {
       __$ItemCopyWithImpl<$Res>;
   @override
   $Res call(
-      {int id,
+      {String productId,
       String title,
       String description,
       String imageUrl,
-      double price});
+      double price,
+      int availability});
 }
 
 /// @nodoc
@@ -109,35 +126,44 @@ class __$ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object id = freezed,
+    Object productId = freezed,
     Object title = freezed,
     Object description = freezed,
     Object imageUrl = freezed,
     Object price = freezed,
+    Object availability = freezed,
   }) {
     return _then(_Item(
-      id: id == freezed ? _value.id : id as int,
+      productId: productId == freezed ? _value.productId : productId as String,
       title: title == freezed ? _value.title : title as String,
       description:
           description == freezed ? _value.description : description as String,
       imageUrl: imageUrl == freezed ? _value.imageUrl : imageUrl as String,
       price: price == freezed ? _value.price : price as double,
+      availability:
+          availability == freezed ? _value.availability : availability as int,
     ));
   }
 }
 
+@JsonSerializable()
+
 /// @nodoc
 class _$_Item implements _Item {
   const _$_Item(
-      {@required this.id,
+      {@required this.productId,
       this.title,
       this.description,
       this.imageUrl,
-      this.price})
-      : assert(id != null);
+      this.price,
+      this.availability})
+      : assert(productId != null);
+
+  factory _$_Item.fromJson(Map<String, dynamic> json) =>
+      _$_$_ItemFromJson(json);
 
   @override
-  final int id;
+  final String productId;
   @override
   final String title;
   @override
@@ -146,18 +172,21 @@ class _$_Item implements _Item {
   final String imageUrl;
   @override
   final double price;
+  @override
+  final int availability;
 
   @override
   String toString() {
-    return 'Item(id: $id, title: $title, description: $description, imageUrl: $imageUrl, price: $price)';
+    return 'Item(productId: $productId, title: $title, description: $description, imageUrl: $imageUrl, price: $price, availability: $availability)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _Item &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.productId, productId) ||
+                const DeepCollectionEquality()
+                    .equals(other.productId, productId)) &&
             (identical(other.title, title) ||
                 const DeepCollectionEquality().equals(other.title, title)) &&
             (identical(other.description, description) ||
@@ -167,34 +196,46 @@ class _$_Item implements _Item {
                 const DeepCollectionEquality()
                     .equals(other.imageUrl, imageUrl)) &&
             (identical(other.price, price) ||
-                const DeepCollectionEquality().equals(other.price, price)));
+                const DeepCollectionEquality().equals(other.price, price)) &&
+            (identical(other.availability, availability) ||
+                const DeepCollectionEquality()
+                    .equals(other.availability, availability)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(productId) ^
       const DeepCollectionEquality().hash(title) ^
       const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(imageUrl) ^
-      const DeepCollectionEquality().hash(price);
+      const DeepCollectionEquality().hash(price) ^
+      const DeepCollectionEquality().hash(availability);
 
   @JsonKey(ignore: true)
   @override
   _$ItemCopyWith<_Item> get copyWith =>
       __$ItemCopyWithImpl<_Item>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_ItemToJson(this);
+  }
 }
 
 abstract class _Item implements Item {
   const factory _Item(
-      {@required int id,
+      {@required String productId,
       String title,
       String description,
       String imageUrl,
-      double price}) = _$_Item;
+      double price,
+      int availability}) = _$_Item;
+
+  factory _Item.fromJson(Map<String, dynamic> json) = _$_Item.fromJson;
 
   @override
-  int get id;
+  String get productId;
   @override
   String get title;
   @override
@@ -203,6 +244,8 @@ abstract class _Item implements Item {
   String get imageUrl;
   @override
   double get price;
+  @override
+  int get availability;
   @override
   @JsonKey(ignore: true)
   _$ItemCopyWith<_Item> get copyWith;

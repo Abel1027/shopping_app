@@ -19,13 +19,6 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
         case Responses.OK:
           yield ItemState.success(getItemsResponse.items);
           break;
-        case Responses.NetworkError:
-          yield ItemState.error(
-            imagePath: Constants.networkError,
-            title: 'Network Error',
-            subtitle: 'Check out your connection and try again',
-          );
-          break;
         case Responses.UnknownError:
           yield ItemState.error(
             imagePath: Constants.alert,

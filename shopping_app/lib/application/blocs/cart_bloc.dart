@@ -15,41 +15,26 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
       CartResponse cartResponse = await shopApi.loadCart();
 
-      if (cartResponse.response == Responses.OK) {
-        yield CartState.success(cartResponse.cart);
-      } else {
-        yield* _mapErrorToState(cartResponse.response);
-      }
+      _mapEventToState(cartResponse);
     } else if (event is AddToCartEvent) {
       yield CartState.loading();
 
       CartResponse cartResponse = await shopApi.addToCart(event.itemId);
 
-      if (cartResponse.response == Responses.OK) {
-        yield CartState.success(cartResponse.cart);
-      } else {
-        yield* _mapErrorToState(cartResponse.response);
-      }
+      _mapEventToState(cartResponse);
     } else if (event is RemoveFromCartEvent) {
       yield CartState.loading();
 
       CartResponse cartResponse = await shopApi.removeFromCart(event.itemId);
 
-      if (cartResponse.response == Responses.OK) {
-        yield CartState.success(cartResponse.cart);
-      } else {
-        yield* _mapErrorToState(cartResponse.response);
-      }
+      _mapEventToState(cartResponse);
     }
   }
 
-  Stream<CartState> _mapErrorToState(Responses response) async* {
-    if (response == Responses.NetworkError) {
-      yield CartState.error(
-        title: 'Network Error',
-        subtitle: 'Check out your connection and try again',
-      );
-    } else if (response == Responses.UnknownError) {
+  Stream<CartState> _mapEventToState(CartResponse cartResponse) async* {
+    if (cartResponse.response == Responses.OK) {
+      yield CartState.success(cartResponse.cart);
+    } else if (cartResponse.response == Responses.UnknownError) {
       yield CartState.error(
         title: 'Unknown Error',
         subtitle: 'Try again later',
