@@ -15,19 +15,19 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
       CartResponse cartResponse = await shopApi.loadCart();
 
-      _mapEventToState(cartResponse);
+      yield* _mapEventToState(cartResponse);
     } else if (event is AddToCartEvent) {
       yield CartState.loading();
 
       CartResponse cartResponse = await shopApi.addToCart(event.itemId);
 
-      _mapEventToState(cartResponse);
+      yield* _mapEventToState(cartResponse);
     } else if (event is RemoveFromCartEvent) {
       yield CartState.loading();
 
       CartResponse cartResponse = await shopApi.removeFromCart(event.itemId);
 
-      _mapEventToState(cartResponse);
+      yield* _mapEventToState(cartResponse);
     }
   }
 

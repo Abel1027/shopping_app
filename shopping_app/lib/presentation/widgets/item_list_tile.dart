@@ -157,8 +157,8 @@ void _addToCart(
           ..hideCurrentSnackBar()
           ..showSnackBar(SnackBar(
             content: Text(
-                'Please wait for the server response before adding another item to '
-                'the cart.'),
+                'Please wait for the server to respond before adding another '
+                'item to the cart.'),
           )),
         orElse: () =>
             BlocProvider.of<CartBloc>(context).add(AddToCartEvent(itemId)),
