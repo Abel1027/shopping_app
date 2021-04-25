@@ -174,6 +174,19 @@ class _CartPopupItem extends StatelessWidget {
                   ),
                   Row(
                     children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.remove),
+                        onPressed: () {
+                          removeItem(context, cItem);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          cartBloc.add(AddToCartEvent(cItem.itemReference));
+                        },
+                      ),
                       SizedBox(width: 20.0),
                       Expanded(child: SizedBox(width: 12.0)),
                       IconButton(

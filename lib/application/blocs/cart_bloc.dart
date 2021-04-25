@@ -69,10 +69,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
       if (cartResponse.response == Responses.OK) {
         List<CountableItem> newCItems = myCart.cItems
-            .where((cItem) =>
-                cItem.itemReference.reference.id !=
-                event.cItem.itemReference.reference.id)
+            .map((cItem) => cItem.copyWith(
+                amount: (event.cItem.itemReference.item.productId ==
+                        cItem.itemReference.item.productId)
+                    ? cItem.amount - 1
+                    : cItem.amount))
             .toList();
+
+        newCItems = newCItems.where((cItem) => cItem.amount > 0).toList();
 
         double newTotal = newCItems.fold(
             0,
