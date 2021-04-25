@@ -79,8 +79,8 @@ class _ItemListTileState extends State<ItemListTile> {
               context,
               widget.itemReference,
             ),
-            onLongPress: () =>
-                BlocProvider.of<CartBloc>(context).add(ResetDbEvent()),
+            onLongPress: () => BlocProvider.of<CartBloc>(context)
+                .add(ResetDbEvent(widget.itemReference.reference)),
           ),
         ]),
       ],

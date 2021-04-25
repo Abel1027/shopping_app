@@ -38,8 +38,10 @@ class _$CartEventTearOff {
   }
 
 // ignore: unused_element
-  ResetDbEvent resetDb() {
-    return const ResetDbEvent();
+  ResetDbEvent resetDb(DocumentReference reference) {
+    return ResetDbEvent(
+      reference,
+    );
   }
 }
 
@@ -55,7 +57,7 @@ mixin _$CartEvent {
     @required TResult addToCart(ItemReference itemReference),
     @required TResult removeFromCart(CountableItem cItem),
     @required TResult pay(),
-    @required TResult resetDb(),
+    @required TResult resetDb(DocumentReference reference),
   });
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
@@ -63,7 +65,7 @@ mixin _$CartEvent {
     TResult addToCart(ItemReference itemReference),
     TResult removeFromCart(CountableItem cItem),
     TResult pay(),
-    TResult resetDb(),
+    TResult resetDb(DocumentReference reference),
     @required TResult orElse(),
   });
   @optionalTypeArgs
@@ -142,7 +144,7 @@ class _$LoadCartEvent implements LoadCartEvent {
     @required TResult addToCart(ItemReference itemReference),
     @required TResult removeFromCart(CountableItem cItem),
     @required TResult pay(),
-    @required TResult resetDb(),
+    @required TResult resetDb(DocumentReference reference),
   }) {
     assert(loadCart != null);
     assert(addToCart != null);
@@ -159,7 +161,7 @@ class _$LoadCartEvent implements LoadCartEvent {
     TResult addToCart(ItemReference itemReference),
     TResult removeFromCart(CountableItem cItem),
     TResult pay(),
-    TResult resetDb(),
+    TResult resetDb(DocumentReference reference),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -287,7 +289,7 @@ class _$AddToCartEvent implements AddToCartEvent {
     @required TResult addToCart(ItemReference itemReference),
     @required TResult removeFromCart(CountableItem cItem),
     @required TResult pay(),
-    @required TResult resetDb(),
+    @required TResult resetDb(DocumentReference reference),
   }) {
     assert(loadCart != null);
     assert(addToCart != null);
@@ -304,7 +306,7 @@ class _$AddToCartEvent implements AddToCartEvent {
     TResult addToCart(ItemReference itemReference),
     TResult removeFromCart(CountableItem cItem),
     TResult pay(),
-    TResult resetDb(),
+    TResult resetDb(DocumentReference reference),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -434,7 +436,7 @@ class _$RemoveFromCartEvent implements RemoveFromCartEvent {
     @required TResult addToCart(ItemReference itemReference),
     @required TResult removeFromCart(CountableItem cItem),
     @required TResult pay(),
-    @required TResult resetDb(),
+    @required TResult resetDb(DocumentReference reference),
   }) {
     assert(loadCart != null);
     assert(addToCart != null);
@@ -451,7 +453,7 @@ class _$RemoveFromCartEvent implements RemoveFromCartEvent {
     TResult addToCart(ItemReference itemReference),
     TResult removeFromCart(CountableItem cItem),
     TResult pay(),
-    TResult resetDb(),
+    TResult resetDb(DocumentReference reference),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -545,7 +547,7 @@ class _$PayEvent implements PayEvent {
     @required TResult addToCart(ItemReference itemReference),
     @required TResult removeFromCart(CountableItem cItem),
     @required TResult pay(),
-    @required TResult resetDb(),
+    @required TResult resetDb(DocumentReference reference),
   }) {
     assert(loadCart != null);
     assert(addToCart != null);
@@ -562,7 +564,7 @@ class _$PayEvent implements PayEvent {
     TResult addToCart(ItemReference itemReference),
     TResult removeFromCart(CountableItem cItem),
     TResult pay(),
-    TResult resetDb(),
+    TResult resetDb(DocumentReference reference),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -616,6 +618,7 @@ abstract class $ResetDbEventCopyWith<$Res> {
   factory $ResetDbEventCopyWith(
           ResetDbEvent value, $Res Function(ResetDbEvent) then) =
       _$ResetDbEventCopyWithImpl<$Res>;
+  $Res call({DocumentReference reference});
 }
 
 /// @nodoc
@@ -627,24 +630,46 @@ class _$ResetDbEventCopyWithImpl<$Res> extends _$CartEventCopyWithImpl<$Res>
 
   @override
   ResetDbEvent get _value => super._value as ResetDbEvent;
+
+  @override
+  $Res call({
+    Object reference = freezed,
+  }) {
+    return _then(ResetDbEvent(
+      reference == freezed ? _value.reference : reference as DocumentReference,
+    ));
+  }
 }
 
 /// @nodoc
 class _$ResetDbEvent implements ResetDbEvent {
-  const _$ResetDbEvent();
+  const _$ResetDbEvent(this.reference) : assert(reference != null);
+
+  @override
+  final DocumentReference reference;
 
   @override
   String toString() {
-    return 'CartEvent.resetDb()';
+    return 'CartEvent.resetDb(reference: $reference)';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is ResetDbEvent);
+    return identical(this, other) ||
+        (other is ResetDbEvent &&
+            (identical(other.reference, reference) ||
+                const DeepCollectionEquality()
+                    .equals(other.reference, reference)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(reference);
+
+  @JsonKey(ignore: true)
+  @override
+  $ResetDbEventCopyWith<ResetDbEvent> get copyWith =>
+      _$ResetDbEventCopyWithImpl<ResetDbEvent>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -653,14 +678,14 @@ class _$ResetDbEvent implements ResetDbEvent {
     @required TResult addToCart(ItemReference itemReference),
     @required TResult removeFromCart(CountableItem cItem),
     @required TResult pay(),
-    @required TResult resetDb(),
+    @required TResult resetDb(DocumentReference reference),
   }) {
     assert(loadCart != null);
     assert(addToCart != null);
     assert(removeFromCart != null);
     assert(pay != null);
     assert(resetDb != null);
-    return resetDb();
+    return resetDb(reference);
   }
 
   @override
@@ -670,12 +695,12 @@ class _$ResetDbEvent implements ResetDbEvent {
     TResult addToCart(ItemReference itemReference),
     TResult removeFromCart(CountableItem cItem),
     TResult pay(),
-    TResult resetDb(),
+    TResult resetDb(DocumentReference reference),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (resetDb != null) {
-      return resetDb();
+      return resetDb(reference);
     }
     return orElse();
   }
@@ -716,5 +741,9 @@ class _$ResetDbEvent implements ResetDbEvent {
 }
 
 abstract class ResetDbEvent implements CartEvent {
-  const factory ResetDbEvent() = _$ResetDbEvent;
+  const factory ResetDbEvent(DocumentReference reference) = _$ResetDbEvent;
+
+  DocumentReference get reference;
+  @JsonKey(ignore: true)
+  $ResetDbEventCopyWith<ResetDbEvent> get copyWith;
 }

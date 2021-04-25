@@ -62,7 +62,15 @@ class ShopAPI {
     int amount,
   ) async {
     try {
-      // throw FormatException('format except');
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        final DocumentSnapshot txSnapshot = await transaction.get(reference);
+        if (!txSnapshot.exists) {
+          throw Exception('Document does not exist!');
+        }
+        final int updatedValue = txSnapshot.data()['availability'];
+        transaction.update(reference, {'availability': updatedValue + amount});
+      });
+
       return CartResponse(Responses.OK);
     } catch (e) {
       print('removeFromCartCatch: ${e.toString()}');
@@ -70,9 +78,12 @@ class ShopAPI {
     }
   }
 
-  Future<CartResponse> resetDB() async {
+  Future<CartResponse> resetDB(DocumentReference reference) async {
     try {
-      // throw FormatException('format except');
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        transaction.update(reference, {'availability': 5});
+      });
+
       return CartResponse(Responses.OK);
     } catch (e) {
       print('removeFromCartCatch: ${e.toString()}');

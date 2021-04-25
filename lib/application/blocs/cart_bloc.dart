@@ -83,11 +83,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
         yield CartState.success(
             cart: myCart, message: 'Items removed successfully!');
-      } else if (cartResponse.response == Responses.OperationFailed) {
-        yield CartState.error(
-          cart: myCart,
-          message: 'No more items to remove.',
-        );
       } else if (cartResponse.response == Responses.UnknownError) {
         yield CartState.error(
           cart: myCart,
@@ -102,18 +97,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     } else if (event is ResetDbEvent) {
       yield CartState.loading();
 
-      CartResponse cartResponse = await shopApi.resetDB();
+      CartResponse cartResponse = await shopApi.resetDB(event.reference);
 
       if (cartResponse.response == Responses.OK) {
         myCart = myCart.copyWith(cItems: <CountableItem>[], total: 0.0);
 
         yield CartState.success(
             cart: myCart, message: 'Data base reset successfully!');
-      } else if (cartResponse.response == Responses.OperationFailed) {
-        yield CartState.error(
-          cart: myCart,
-          message: 'Error during data base reset operation.',
-        );
       } else if (cartResponse.response == Responses.UnknownError) {
         yield CartState.error(
           cart: myCart,
