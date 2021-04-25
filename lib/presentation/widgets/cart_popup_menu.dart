@@ -87,6 +87,10 @@ class CartPopupMenu extends StatelessWidget {
                     price: cart.total,
                     currency: 'USD',
                   ),
+                  error: (cart, message) => PricePrint(
+                    price: cart.total,
+                    currency: 'USD',
+                  ),
                   orElse: () => Text(
                     '',
                     overflow: TextOverflow.fade,
@@ -177,7 +181,7 @@ class _CartPopupItem extends StatelessWidget {
                       IconButton(
                         icon: Icon(Icons.remove),
                         onPressed: () {
-                          removeItem(context, cItem);
+                          removeItem(context, cItem.copyWith(amount: 1));
                         },
                       ),
                       IconButton(

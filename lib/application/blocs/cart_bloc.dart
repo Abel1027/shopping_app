@@ -72,7 +72,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             .map((cItem) => cItem.copyWith(
                 amount: (event.cItem.itemReference.item.productId ==
                         cItem.itemReference.item.productId)
-                    ? cItem.amount - 1
+                    ? cItem.amount - event.cItem.amount
                     : cItem.amount))
             .toList();
 
